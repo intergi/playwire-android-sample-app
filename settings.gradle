@@ -1,0 +1,4 @@
+include ':PlaywireSDK_Amazon'
+include ':PlaywireSDK'
+include ':app'
+rootProject.name = "Playwire SDK Apps"

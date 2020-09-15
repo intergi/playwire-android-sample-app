@@ -1,0 +1,30 @@
+{
+  "serverConfigs":
+  [
+    {
+      "name": "PWAmazon",
+      "serverType": "Amazon",
+      "account": "b1f05586-a4dd-4d23-95d4-a605466437b8",
+      "useGeo": true,
+      "isTest": true
+    }
+  ],
+  "adUnits":
+  [
+    {
+      "name": "300x250 - Amazon",
+      "mode": "Banner",
+      "gadUnitId": "/154013155/1024308/72818/1024308-72818-medium_rectangle",
+      "gadSizes": [{"width": 300, "height": 250}],
+      "adUnitConfigs":
+      [
+        {
+          "serverConfig": "PWAmazon",
+          "adUnitId": "81ef3b9c-90ff-4e53-8250-acdbce2c344c",
+          "adSizes": [{"width": 300, "height": 250}]
+        }
+      ]
+    }
+  ]
+}
+

@@ -8,6 +8,7 @@ import com.google.android.gms.ads.doubleclick.PublisherAdView
 import com.intergi.playwiresdk.PWAdBannerViewHelper
 
 import com.intergi.playwiresdk.PWAdSlot
+import com.intergi.playwiresdk.PWUMPDebug
 import com.intergi.playwiresdk.PlaywireSDK
 import com.intergi.playwiresdk_amazon.PWAdBidder_Amazon
 
@@ -27,19 +28,32 @@ class MainActivity : AppCompatActivity() {
 
         val adUnitName = "300x250 - Amazon"
         adSlot = PWAdSlot(adUnitName)
-        adSlot!!.load {
-            var ad_view = PublisherAdView(this)
 
-            ad_view.setBackgroundColor(Color.RED)
+        if (BuildConfig.DEBUG) {
+            val debugBuilder = PWUMPDebug.PWUMPDebugBuilder(this)
+                .resettingInfo()
+                .forcingEEALocation()
+                .addTestDeviceHashedId("26F4F73131B7FBDD640FC59E5A4DA646")
 
-            val rLParams: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            rLParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1)
-            relativeLayoput!!.addView(ad_view, rLParams);
-
-            PWAdBannerViewHelper.loadView(adSlot!!, ad_view)
+            PlaywireSDK.umpManager.debug = debugBuilder.build()
         }
+
+        PlaywireSDK.umpManager.requestConsent(this, {
+            adSlot!!.load {
+                var ad_view = PublisherAdView(this)
+
+                ad_view.setBackgroundColor(Color.RED)
+
+                val rLParams: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT
+                )
+                rLParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1)
+                relativeLayoput!!.addView(ad_view, rLParams);
+
+                PWAdBannerViewHelper.loadView(adSlot!!, ad_view)
+            }
+        })
+
 
     }
 }

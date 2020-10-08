@@ -4,7 +4,7 @@
     {
       "name": "PWAmazon",
       "serverType": "Amazon",
-      "account": "b1f05586-a4dd-4d23-95d4-a605466437b8",
+      "account": "555c965d-7e48-4960-a8b1-f730ef9eb000",
       "useGeo": true,
       "isTest": true
     }
@@ -14,13 +14,13 @@
     {
       "name": "300x250 - Amazon",
       "mode": "Banner",
-      "gadUnitId": "/154013155/1024308/72818/1024308-72818-medium_rectangle",
-      "gadSizes": [{"width": 300, "height": 250}],
+      "gadUnitId": "/154013155,1082185/1024308/72734/1024308-72734-medium_rectangle/1024308-72734-medium_rectangle-CP/1024308-72734-medium_rectangle-CP-in-article",
+      "gadSizes": [{"width": 300, "height": 250}, {"width": 320, "height": 50}],
       "adUnitConfigs":
       [
         {
           "serverConfig": "PWAmazon",
-          "adUnitId": "81ef3b9c-90ff-4e53-8250-acdbce2c344c",
+          "adUnitId": "666dcfe0-d023-4c2f-86df-4b692d36d18e",
           "adSizes": [{"width": 300, "height": 250}]
         }
       ]

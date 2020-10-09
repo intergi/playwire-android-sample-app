@@ -26,6 +26,7 @@ Include permissions
 ```
 
 Declare as Google Ad Manager app
+and make available the app-id in google ad manager to the UMP (User Messaging Platform)
 
 ```xml 
     <application>
@@ -33,6 +34,10 @@ Declare as Google Ad Manager app
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true"/>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6531503260671471~3119413040"/>
 
     </application>
 ```
@@ -60,20 +65,18 @@ Include lib folder to read aar libraries
 
 ```gradle
 dependencies {
-    implementation 'com.google.android.gms:play-services-ads:19.3.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
-
-    implementation 'com.amazon.android:aps-sdk:8.3.2@aar'
 
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-
+    implementation 'com.google.android.gms:play-services-ads:19.3.0'
+    implementation 'com.google.android.ump:user-messaging-platform:1.0.0'
+    implementation 'com.amazon.android:aps-sdk:8.3.2@aar'
 }
 ```
 
 Copy Playwire libraries into libs folder
 
-PlaywireSDK-release.aar
-PlaywireSDK_Amazon-release.aar
+PlaywireSDK-1.0.3-release.aar
+PlaywireSDK_Amazon-1.0.3-release.aar
 
 3. ### Create PlaywireConfig.json file
 
@@ -81,33 +84,33 @@ In assets folder
 
 ```json
 {
-    "serverConfigs":
-    [
+  "serverConfigs":
+  [
+    {
+      "name": "PWAmazon",
+      "serverType": "Amazon",
+      "account": "555c965d-7e48-4960-a8b1-f730ef9eb000",
+      "useGeo": true,
+      "isTest": true
+    }
+  ],
+  "adUnits":
+  [
+    {
+      "name": "300x250 - Amazon",
+      "mode": "Banner",
+      "gadUnitId": "/154013155,1082185/1024308/72734/1024308-72734-medium_rectangle/1024308-72734-medium_rectangle-CP/1024308-72734-medium_rectangle-CP-in-article",
+      "gadSizes": [{"width": 300, "height": 250}, {"width": 320, "height": 50}],
+      "adUnitConfigs":
+      [
         {
-            "name": "PWAmazon",
-            "serverType": "Amazon",
-            "account": "b1f05586-a4dd-4d23-95d4-a605466437b8",
-            "useGeo": true,
-            "isTest": true
+          "serverConfig": "PWAmazon",
+          "adUnitId": "666dcfe0-d023-4c2f-86df-4b692d36d18e",
+          "adSizes": [{"width": 300, "height": 250}]
         }
-    ],
-    "adUnits":
-    [
-        {
-            "name": "300x250 - Amazon",
-            "mode": "Banner",
-            "gadUnitId": "/154013155/1024308/72818/1024308-72818-medium_rectangle",
-            "gadSizes": [{"width": 300, "height": 250}],
-            "adUnitConfigs":
-            [
-                {
-                    "serverConfig": "PWAmazon",
-                    "adUnitId": "81ef3b9c-90ff-4e53-8250-acdbce2c344c",
-                    "adSizes": [{"width": 300, "height": 250}]
-                }
-            ]
-        }
-    ]
+      ]
+    }
+  ]
 }
 ```
 
@@ -115,43 +118,50 @@ In assets folder
 
 
 ```kotlin
-package com.intergi.playwiresdkapps
-
-// Import PlaywireSDK needed
-import com.intergi.playwiresdk.PWAdSlot
-import com.intergi.playwiresdk.PlaywireSDK
-import com.intergi.playwiresdk_amazon.PWAdBidder_Amazon
-
-class MainActivity : AppCompatActivity() {
-
-	// Define Ad Slot
-    var adSlot : PWAdSlot? = null
-
+    // we only are able to ask for an ad only after users are given their consent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Configure PlaywireSDK
+        configureAdManager() {showAd()}
+    }
+    
+    private fun configureAdManager(onReady: ()->Unit) {
+        // load configuration from json file
         PlaywireSDK.loadFromAssetFile(this, "PWStoreConfig.json")
-        // Register Amazon Ad Bidder in Playwire SDK
+        // use amazon header bidding
         PWAdBidder_Amazon.register(this)
 
-        // Load Ad Slot
+        // in debug pretend user are in EU
+        if (BuildConfig.DEBUG) {
+            val debugBuilder = PWUMPDebug.PWUMPDebugBuilder(this)
+                .resettingInfo()
+                .forcingEEALocation()
+                .addTestDeviceHashedId("26F4F73131B7FBDD640FC59E5A4DA646")
+
+            PlaywireSDK.umpManager.debug = debugBuilder.build()
+        }
+
+        // request user consent with a helper into the sdk
+        // result is async
+        PlaywireSDK.umpManager.requestConsent(this, {
+            onReady()
+        })
+
+    }
+
+    private fun showAd(){
+        // create adslot given the name
         val adUnitName = "300x250 - Amazon"
         adSlot = PWAdSlot(adUnitName)
+
+        // prebid and create view after prebid result
         adSlot!!.load {
-
-        	// on slot loade create Publisher Ad View
             var ad_view = PublisherAdView(this)
-
-            // Ad view to Activity view tree
-            // ...
-
-            // Use Playwire Helper to configure the view
+            addAdView(ad_view)
             PWAdBannerViewHelper.loadView(adSlot!!, ad_view)
         }
 
     }
-}}
 ```
 

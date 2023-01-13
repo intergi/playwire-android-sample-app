@@ -1,0 +1,33 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = 'https://maven.pkg.github.com/intergi/playwire-android-binaries'
+            credentials {
+                username = "YOUR_GITHUB_USERNAME"
+                password = "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN"
+            }
+        }
+        maven {
+            // IronSource
+            url 'https://android-sdk.is.com/'
+        }
+        maven {
+            // Pangle
+            url 'https://artifact.bytedance.com/repository/pangle/'
+        }
+    }
+}
+rootProject.name = "playwire-android-sample-app"
+include ':demo-kotlin'
+include ':demo-java'

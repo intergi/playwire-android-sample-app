@@ -24,9 +24,10 @@ class NativeAdActivity: AppCompatActivity() {
     private var isNativeAdded = false
 
     override fun onDestroy() {
-        super.onDestroy()
         // Must call the `destroy` method to avoid memory leak.
         nativeAd?.destroy()
+
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

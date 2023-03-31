@@ -30,12 +30,12 @@ public class NativeAdActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
         /// Must call the `destroy` method to avoid memory leak.
         if (nativeView != null) {
             nativeView.destroy();
         }
+
+        super.onDestroy();
     }
 
     @Override

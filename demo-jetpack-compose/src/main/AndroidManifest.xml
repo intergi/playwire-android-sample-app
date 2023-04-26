@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.playwire.demo_jetpack_compose">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Playwireandroidsampleapp">
+
+        <meta-data android:name="PWInitBackend" android:value="S3" />
+        <meta-data android:name="PWInitOldFormat" android:value="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true"/>
+
+        <activity
+            android:name=".adtypes.AdTypesActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ads.fullscreen.appopenad.AppOpenAdActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+        </activity>
+        <activity
+            android:name=".ads.fullscreen.interstitial.InterstitialActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+        </activity>
+        <activity
+            android:name=".ads.fullscreen.rewarded.RewardedActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+        </activity>
+        <activity
+            android:name=".ads.fullscreen.rewardedinterstitial.RewardedInterstitialActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+        </activity>
+        <activity
+            android:name=".ads.view.banner.BannerActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+        </activity>
+        <activity
+            android:name=".ads.view.banner.InlineBannerActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+        </activity>
+        <activity
+            android:name=".ads.view.banner.AnchoredBannerActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Playwireandroidsampleapp">
+        </activity>
+    </application>
+
+</manifest>

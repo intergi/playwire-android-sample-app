@@ -26,6 +26,9 @@ dependencyResolutionManagement {
             // Pangle
             url 'https://artifact.bytedance.com/repository/pangle/'
         }
+        maven {
+            url 'https://cboost.jfrog.io/artifactory/chartboost-ads/'
+        }
     }
 }
 rootProject.name = "playwire-android-sample-app"

@@ -31,3 +31,4 @@ dependencyResolutionManagement {
 rootProject.name = "playwire-android-sample-app"
 include ':demo-kotlin'
 include ':demo-java'
+include ':demo-jetpack-compose'

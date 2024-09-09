@@ -3,12 +3,11 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.playwire.demo_java"
-        minSdk 21
-        targetSdk 32
+        minSdk 24
         versionCode 1
         versionName "1.0"
 
@@ -39,6 +38,7 @@ android {
             versionNameSuffix "-coppa"
         }
     }
+    namespace 'com.playwire.demo_java'
 }
 
 dependencies {
@@ -53,7 +53,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics-ktx:21.1.1'
     /// Total
-    totalImplementation 'com.intergi.playwire:playwiresdk_total:8.1.0'
+    totalImplementation 'com.intergi.playwire:playwiresdk_total:10.3.0'
     /// COPPA
-    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:8.1.0'
+    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:10.3.0'
 }

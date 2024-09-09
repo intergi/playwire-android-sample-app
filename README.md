@@ -2,10 +2,10 @@
 
 This project is was created using the next tech stack:
 
-- Android minSdkVersion 21
-- Android targetSdkVersion 32
-- Java 8 compatibility
-- Kotlin 1.7.10
+- Android minSdkVersion 24
+- Android targetSdkVersion 33
+- Java 11 compatibility
+- Kotlin 1.8.20
 
 ### Setup Github Gradle registry access
 

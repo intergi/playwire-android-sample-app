@@ -29,12 +29,12 @@ public class BannerActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
         /// Must call the `destroy` method to avoid memory leak
         if (bannerView != null) {
             bannerView.destroy();
         }
+
+        super.onDestroy();
     }
 
     @Override

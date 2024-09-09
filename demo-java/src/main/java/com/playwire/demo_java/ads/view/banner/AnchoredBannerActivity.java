@@ -1,6 +1,5 @@
 package com.playwire.demo_java.ads.view.banner;
 
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.intergi.playwiresdk.PlaywireSDK;
 import com.intergi.playwiresdk.ads.PWLoadParams;
 import com.intergi.playwiresdk.ads.view.PWViewAd;
 import com.intergi.playwiresdk.ads.view.banner.PWBannerViewAnchored;
-import com.intergi.playwiresdk.ads.view.banner.PWBannerViewInline;
 import com.playwire.demo_java.R;
 import com.playwire.demo_java.misc.Constant;
 
@@ -32,12 +30,12 @@ public class AnchoredBannerActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
         /// Must call the `destroy` method to avoid memory leak
         if (bannerView != null) {
             bannerView.destroy();
         }
+
+        super.onDestroy();
     }
 
     @Override

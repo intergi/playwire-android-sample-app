@@ -26,10 +26,10 @@ class AnchoredBannerActivity: AppCompatActivity() {
     private var isBannerAdded = false
 
     override fun onDestroy() {
-        super.onDestroy()
-
         // Must call the `destroy` method to avoid memory leak.
         banner?.destroy()
+
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

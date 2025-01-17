@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.playwire.demo_java"
@@ -25,15 +25,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    flavorDimensions "version"
+    flavorDimensions "distribution"
     productFlavors {
         total {
-            dimension "version"
+            dimension "distribution"
             applicationIdSuffix ".total"
             versionNameSuffix "-total"
         }
         coppa {
-            dimension "version"
+            dimension "distribution"
             applicationIdSuffix ".coppa"
             versionNameSuffix "-coppa"
         }
@@ -53,7 +53,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics-ktx:21.1.1'
     /// Total
-    totalImplementation 'com.intergi.playwire:playwiresdk_total:10.3.0'
+    totalImplementation 'com.intergi.playwire:playwiresdk_total:10.6.1'
     /// COPPA
-    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:10.3.0'
+    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:10.6.1'
 }
+

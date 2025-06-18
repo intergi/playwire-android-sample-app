@@ -74,7 +74,7 @@ class AdTypesActivity: AppCompatActivity() {
 
         // Initialize Playwire SDK with `publisherId` and `appId`, when initialization done, you will be able to load ad units.
         // Make sure you run SDK initialization only once.
-        PlaywireSDK.initialize("playwire", "test", this) {
+        PlaywireSDK.initialize("1024407", "26", this) {
             statusTextView.text = null
             setupListView()
         }

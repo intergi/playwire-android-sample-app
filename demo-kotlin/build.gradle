@@ -16,8 +16,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -36,11 +40,11 @@ android {
             applicationIdSuffix ".total"
             versionNameSuffix "-total"
         }
-        coppa {
-            dimension "distribution"
-            applicationIdSuffix ".coppa"
-            versionNameSuffix "-coppa"
-        }
+//        coppa {
+//            dimension "distribution"
+//            applicationIdSuffix ".coppa"
+//            versionNameSuffix "-coppa"
+//        }
     }
     namespace 'com.playwire.demo_kotlin'
 }
@@ -63,5 +67,5 @@ dependencies {
     /// Total
     totalImplementation 'com.intergi.playwire:playwiresdk_total:11.4.0'
     /// COPPA
-    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:11.4.0'
+//    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:11.4.0'
 }

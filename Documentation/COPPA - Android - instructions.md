@@ -133,7 +133,7 @@ dependencies {
     // kotlin needed if your app is only java
     compile 'org.jetbrains.kotlin:kotlin-stdlib:1.3.21'
     // Playwire Total version
-    implementation 'com.intergi.playwire:playwiresdk_coppa:8.1.0'
+    implementation 'com.intergi.playwire:playwiresdk_coppa:11.5.0'
     implementation 'com.google.firebase:firebase-analytics-ktx:21.1.1'
 }
 ```

@@ -16,11 +16,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.playwire_android_sample_app"
-        tools:targetApi="31">
+        android:theme="@style/Theme.playwire_android_sample_app">
 
-        <meta-data android:name="PWInitBackend" android:value="S3" />
-        <meta-data android:name="PWInitOldFormat" android:value="true" />
+        <meta-data android:name="PWInitBackend" android:value="Ramp" />
+        <meta-data android:name="PWInitOldFormat" android:value="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

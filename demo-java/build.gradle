@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.playwire.demo_java"
@@ -57,8 +57,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics-ktx:21.1.1'
     /// Total
-    totalImplementation 'com.intergi.playwire:playwiresdk_total:11.5.0'
+    totalImplementation 'com.intergi.playwire:playwiresdk_total:11.5.1'
     /// COPPA
-//    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:11.5.0'
+//    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:11.5.1'
 }
 

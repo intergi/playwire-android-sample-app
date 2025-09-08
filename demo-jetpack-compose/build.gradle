@@ -83,7 +83,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics-ktx:21.1.1'
     /// Total
-    totalImplementation 'com.intergi.playwire:playwiresdk_total:11.5.1'
+    totalImplementation 'com.intergi.playwire:playwiresdk_total:11.5.2'
     /// COPPA
-//    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:11.5.1'
+//    coppaImplementation 'com.intergi.playwire:playwiresdk_coppa:11.5.2'
 }

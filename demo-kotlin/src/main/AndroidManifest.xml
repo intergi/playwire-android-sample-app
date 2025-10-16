@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.playwire_android_sample_app">
 
-        <meta-data android:name="PWInitBackend" android:value="Ramp" />
-        <meta-data android:name="PWInitOldFormat" android:value="false" />
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6531503260671471~7633749100" />
 
         <activity
-            android:name=".adtypes.AdTypesActivity"
-            android:screenOrientation="sensor"
-            android:exported="true">
+            android:name=".ad_types.AdTypesActivity"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,40 +29,22 @@
 
         <activity
             android:name=".ads.view.banner.BannerActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity android:name=".ads.fullscreen.interstitial.InterstitialActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity
-            android:name=".ads.fullscreen.rewarded.RewardedActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity
-            android:name=".ads.fullscreen.rewardedinterstitial.RewardedInterstitialActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity
-            android:name=".ads.view.nativead.NativeAdActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity
-            android:name=".ads.fullscreen.appopenad.AppOpenAdActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity
-            android:name=".ads.view.banner.InlineBannerActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity
-            android:name=".ads.view.banner.AnchoredBannerActivity"
-            android:screenOrientation="sensor"
-            android:exported="true" />
-        <activity
-            android:name=".ads.view.banner.BannerLayoutActivity"
-            android:screenOrientation="sensor"
             android:exported="true" />
 
+        <activity android:name=".ads.fullscreen.interstitial.InterstitialActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ads.fullscreen.rewarded.RewardedActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ads.view.nativead.NativeAdActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ads.fullscreen.app_open.AppOpenAdActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

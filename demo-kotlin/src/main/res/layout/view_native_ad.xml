@@ -1,112 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.playwire.demo_kotlin.ads.view.nativead.NativeView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.demo_kotlin.ads.view.nativead.NativeView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginHorizontal="16dp"
     android:background="#FFFFFF"
     android:minHeight="50dp"
-    android:layout_marginHorizontal="16dp"
-    android:orientation="vertical">
+    android:paddingLeft="20dp"
+    android:paddingTop="3dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/ad_app_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/ad_app_icon"
+        android:paddingHorizontal="5dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ad_headline"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="3dp">
+        android:textColor="#673AB7"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ad_app_icon"
+        app:layout_constraintTop_toTopOf="@id/ad_app_icon"
+        tools:text="Headline" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    <TextView
+        android:id="@+id/ad_advertiser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ad_app_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ad_app_icon"
+        app:layout_constraintTop_toBottomOf="@id/ad_headline"
+        tools:text="Advertiser" />
 
-            <ImageView
-                android:id="@+id/ad_app_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:adjustViewBounds="true"
-                android:paddingBottom="5dp"
-                android:paddingHorizontal="5dp"/>
+    <TextView
+        android:id="@+id/ad_body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ad_app_icon"
+        tools:text="This is the ad body. It can be multiple lines." />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/ad_headline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#673AB7"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/ad_advertiser"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="bottom"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-        </LinearLayout>
+    <FrameLayout
+        android:id="@+id/ad_media"
+        android:layout_width="250dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ad_body" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <Button
+        android:id="@+id/ad_call_to_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ad_media"
+        tools:text="Install" />
 
-            <TextView
-                android:id="@+id/ad_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:textSize="12sp" />
+    <TextView
+        android:id="@+id/ad_store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="5dp"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/ad_call_to_action"
+        app:layout_constraintEnd_toStartOf="@id/ad_call_to_action"
+        app:layout_constraintTop_toTopOf="@id/ad_call_to_action"
+        tools:text="Google Play" />
 
-            <FrameLayout
-                android:id="@+id/ad_media"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="250dp"
-                android:layout_height="175dp"
-                android:layout_marginTop="5dp"
-                />
+    <TextView
+        android:id="@+id/ad_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="5dp"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/ad_call_to_action"
+        app:layout_constraintEnd_toStartOf="@id/ad_store"
+        app:layout_constraintTop_toTopOf="@id/ad_call_to_action"
+        tools:text="$1.99" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp">
-
-                <TextView
-                    android:id="@+id/ad_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingStart="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingEnd="5dp"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/ad_store"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingStart="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingEnd="5dp"
-                    android:textSize="12sp" />
-
-                <Button
-                    android:id="@+id/ad_call_to_action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-</com.playwire.demo_kotlin.ads.view.nativead.NativeView>
+</com.example.demo_kotlin.ads.view.nativead.NativeView>

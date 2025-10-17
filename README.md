@@ -1,15 +1,16 @@
 # playwire-android-sample-app
 
-This project is was created using the next tech stack:
+This workspace has 3 schemes that demonstrate the usage of PlaywireSDK in three different scenarios:
 
-- Android minSdkVersion 24
-- Android targetSdkVersion 33
-- Java 11 compatibility
-- Kotlin 1.8.20
+- A Kotlin Android app
+- A Java Android app
+- A Jetpack Compose Kotlin Android app 
 
 ### Setup Github Gradle registry access
 
-As the `Playwire Android SDK` is distributed via the remote GitHub Gradle registry, even though such SDK is accessible publicly there, GitHub still requires to do authentication.
+`Playwire Android SDK` is currently distributed via a remote GitHub Gradle registry.
+Playwire SDK is accessible publicly there but GitHub still requires authentication to pull the SDK.
+
 See the official [GitHub Gradle registry's guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry) to get more details about Github authentication.
 
   1. You have to create a personal access token(PAT) to synchronize gradle without errors. See the official [GitHub PAT creation guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to create token.
@@ -32,8 +33,3 @@ See the official [GitHub Gradle registry's guide](https://docs.github.com/en/pac
 ### Run demo app
 
 Select required demo app configuration and run.
-
-### Build variants
-
-Pay attention to build variants of this project. The **COPPA** and **Total** flavors are used to install the corresponding Playwire dependency. 
-Select required one based on your needs.

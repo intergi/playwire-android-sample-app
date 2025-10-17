@@ -1,3 +1,33 @@
 <resources>
-    <string name="app_name">demo-compose</string>
+<string name="app_name">demo-compose</string>
+<string name="ad_app_icon">Ad App Icon</string>
+<string name="app_open_ad_loaded">✅ The app open ad \"%1$s\" is loaded.</string>
+<string name="app_open_ad_load_failed">❌ Failed to load the app open ad \"%1$s\".</string>
+<string name="app_open_ad_show_failed">❌ Failed to show the app open ad \"%1$s\".</string>
+<string name="app_open_ad_shown">👍 The app open ad \"%1$s\" was successfully shown.</string>
+<string name="app_open_ad_loading">⏳ The app open ad \"%1$s\" is loading.</string>
+<string name="interstitial_ad_loaded">✅ The interstitial \"%1$s\" is loaded.</string>
+<string name="interstitial_ad_load_failed">❌ Failed to load the interstitial \"%1$s\".</string>
+<string name="interstitial_ad_shown">👍 The interstitial \"%1$s\" was successfully shown.</string>
+<string name="interstitial_ad_show_failed">❌ Failed to show the interstitial \"%1$s\".</string>
+<string name="interstitial_ad_loading">⏳ The interstitial \"%1$s\" is loading.</string>
+<string name="rewarded_ad_loaded">✅ The rewarded \"%1$s\" is loaded.</string>
+<string name="rewarded_ad_load_failed">❌ Failed to load the rewarded \"%1$s\".</string>
+<string name="rewarded_ad_shown">👍 The rewarded \"%1$s\" was successfully shown.</string>
+<string name="rewarded_ad_earned">🎉 The reward is earned.\n Type: %1$s \n Amount: %2$d</string>
+<string name="rewarded_ad_show_failed">❌ Failed to show the rewarded \"%1$s\".</string>
+<string name="rewarded_ad_loading">⏳ The rewarded \"%1$s\" is loading.</string>
+<string name="rewarded_interstitial_ad_loaded">✅ The rewarded interstitial \"%1$s\" is loaded.</string>
+<string name="rewarded_interstitial_ad_load_failed">❌ Failed to load the rewarded interstitial \"%1$s\".</string>
+<string name="rewarded_interstitial_ad_shown">👍 The rewarded interstitial \"%1$s\" was successfully shown.</string>
+<string name="rewarded_interstitial_ad_rewarded">🎉 The reward is earned.\n Type: %1$s \n Amount: %2$d</string>
+<string name="rewarded_interstitial_ad_show_failed">❌ Failed to show the rewarded interstitial \"%1$s\".</string>
+<string name="rewarded_interstitial_ad_loading">⏳ The rewarded interstitial \"%1$s\" is loading.</string>
+<string name="banner_ad_loaded">✅ The banner \"%1$s\" is loaded.</string>
+<string name="banner_ad_load_failed">❌ Failed to load the banner \"%1$s\".</string>
+<string name="banner_ad_loading">⏳ The banner \"%1$s\" is loading.</string>
+<string name="native_ad_loaded">✅ The native ad \"%1$s\" is loaded.</string>
+<string name="native_ad_load_failed">❌ Failed to load the native ad \"%1$s\"..</string>
+<string name="native_ad_shown">👍 The native ad content \"%1$s\" was successfully shown.</string>
+<string name="native_ad_loading">⏳ The native ad \"%1$s\" is loading.</string>
 </resources>

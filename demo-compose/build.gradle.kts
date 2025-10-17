@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -48,23 +49,40 @@ repositories {
         name = "GithubPackages"
         url = uri("https://maven.pkg.github.com/intergi/playwire-android-binaries")
         credentials {
-            username = "inderdhir"
-            password = "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"
+            username = "USERNAME"
+            password = "PASSWORD"
         }
     }
+
+    maven("https://android-sdk.is.com/")
+    maven("https://artifact.bytedance.com/repository/pangle/")
+    maven("https://cboost.jfrog.io/artifactory/chartboost-ads/")
+    maven("https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea")
+    maven("https://repo.pubmatic.com/artifactory/public-repos/")
+    maven("https://maven.ogury.co")
+    maven("https://s3.amazonaws.com/smaato-sdk-releases/")
+    maven("https://verve.jfrog.io/artifactory/verve-gradle-release")
 }
 
 dependencies {
-//    implementation("com.intergi.playwire:playwiresdk_total:11.5.2")
-//    implementation("androidx.core:core-ktx:1.17.0")
-//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
+    // Add Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
 
+    // Add Playwire total for a Standard/NonCOPPA integration
+    implementation("com.intergi.playwire:playwiresdk_total:11.5.2")
+    // OR
+    // Add Playwire COPPA for a COPPA app
+    // implementation("com.intergi.playwire:playwiresdk_coppa:11.5.2")
+
+    implementation("androidx.lifecycle:lifecycle-process:2.9.4")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
     implementation("androidx.activity:activity-compose:1.11.0")
     implementation(platform("androidx.compose:compose-bom:2025.10.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-core:1.7.8")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")

@@ -42,15 +42,11 @@ class AdTypesAdapter(
         override fun areItemsTheSame(
             oldItem: Pair<PWAdMode, String>,
             newItem: Pair<PWAdMode, String>
-        ): Boolean {
-            return oldItem.second == newItem.second
-        }
+        ): Boolean = oldItem.second == newItem.second
 
         override fun areContentsTheSame(
             oldItem: Pair<PWAdMode, String>,
             newItem: Pair<PWAdMode, String>
-        ): Boolean {
-            return oldItem == newItem
-        }
+        ): Boolean = oldItem == newItem
     }
 }

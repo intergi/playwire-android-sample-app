@@ -56,7 +56,7 @@ class NativeAdActivity : ComponentActivity() {
 
         setContent {
             PlaywireAppTheme {
-                NativeAdScreen(adUnitName, statusText.value,  { onBackPressedDispatcher.onBackPressed() })
+                NativeAdScreen(adUnitName, statusText.value)  { onBackPressedDispatcher.onBackPressed() }
             }
         }
 

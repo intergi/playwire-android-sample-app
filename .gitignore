@@ -35,3 +35,5 @@ google-services.json
 
 # Mac OS X Finder
 .DS_Store
+
+.kotlin

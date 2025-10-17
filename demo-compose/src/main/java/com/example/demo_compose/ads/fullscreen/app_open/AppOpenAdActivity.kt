@@ -6,24 +6,25 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
+import com.example.demo_compose.R
 import com.example.demo_compose.misc.Constant
 import com.example.demo_compose.ui.theme.PlaywireAppTheme
 import com.intergi.playwiresdk.ads.fullscreen.PWFullScreenAd
 import com.intergi.playwiresdk.ads.fullscreen.appopen.PWAppOpenAd
-import com.example.demo_compose.R
 
-class AppOpenAdActivity : ComponentActivity(), LifecycleEventObserver {
+class AppOpenAdActivity : ComponentActivity() {
 
     private lateinit var adUnitName: String
     private var appOpenAd: PWAppOpenAd? = null
@@ -75,31 +76,6 @@ class AppOpenAdActivity : ComponentActivity(), LifecycleEventObserver {
             appOpenAd.show(this)
         }
     }
-
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_START -> {
-                loadAd()
-            }
-
-            Lifecycle.Event.ON_PAUSE -> {
-                if (appOpenAd != null && appOpenAd?.isLoaded == true) return
-                loadAd()
-            }
-
-            else -> {}
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,6 +85,14 @@ fun AppOpenAdScreen(adUnitName: String?, statusText: String, onNavigateUp: () ->
         topBar = {
             TopAppBar(
                 title = { Text(text = adUnitName ?: "App Open Ad") },
+                navigationIcon = {
+                    IconButton(onClick = { onNavigateUp }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back Button"
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->

@@ -4,7 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -69,6 +73,14 @@ fun BannerAdScreen(adUnitName: String?, statusText: String, isAdLoaded: Boolean,
         topBar = {
             TopAppBar(
                 title = { Text(text = adUnitName ?: "Banner Ad") },
+                navigationIcon = {
+                    IconButton(onClick = { onNavigateUp }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back Button"
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->

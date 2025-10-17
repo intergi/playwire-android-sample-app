@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -36,8 +38,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
     }
 }
 
@@ -73,8 +78,6 @@ dependencies {
     // Add Playwire COPPA for a COPPA app
     // implementation("com.intergi.playwire:playwiresdk_coppa:11.5.2")
 
-    implementation("androidx.lifecycle:lifecycle-process:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-runtime:2.9.4")
     implementation("com.google.android.material:material:1.13.0")
 
     testImplementation("junit:junit:4.13.2")

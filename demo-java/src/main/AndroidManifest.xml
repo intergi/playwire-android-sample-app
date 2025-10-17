@@ -16,6 +16,35 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6531503260671471~7633749100" />
 
+        <activity
+            android:name=".ad_types.AdTypesActivity"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ads.view.banner.BannerActivity"
+            android:exported="true" />
+
+        <activity android:name=".ads.fullscreen.interstitial.InterstitialActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ads.fullscreen.rewarded.RewardedActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ads.view.nativead.NativeAdActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ads.fullscreen.app_open.AppOpenAdActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

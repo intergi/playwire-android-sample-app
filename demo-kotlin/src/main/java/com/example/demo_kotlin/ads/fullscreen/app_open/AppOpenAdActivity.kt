@@ -49,6 +49,7 @@ class AppOpenAdActivity : FullScreenAdActivity(), LifecycleEventObserver {
         }
 
         appOpenAd = PWAppOpenAd(application, adUnitName, listener)
+        appOpenAd?.autoReloadOnExpiration = true
         appOpenAd?.load()
 
         statusTextView.text = getString(R.string.app_open_ad_loading, adUnitName)

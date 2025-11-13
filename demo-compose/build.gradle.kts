@@ -74,10 +74,10 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
 
     // Add Playwire total for a Standard/NonCOPPA integration
-    implementation("com.intergi.playwire:playwiresdk_total:11.5.2")
+    implementation("com.intergi.playwire:playwiresdk_total:11.6.0")
     // OR
     // Add Playwire COPPA for a COPPA app
-    // implementation("com.intergi.playwire:playwiresdk_coppa:11.5.2")
+    // implementation("com.intergi.playwire:playwiresdk_coppa:11.6.0")
 
     implementation("androidx.activity:activity-compose:1.11.0")
     implementation(platform("androidx.compose:compose-bom:2025.10.00"))

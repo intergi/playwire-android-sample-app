@@ -32,6 +32,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -49,15 +50,6 @@ kotlin {
 repositories {
     google()
     mavenCentral()
-    maven {
-        name = "GithubPackages"
-        url = uri("https://maven.pkg.github.com/intergi/playwire-android-binaries")
-        credentials {
-            username = "USERNAME"
-            password = "PASSWORD"
-        }
-    }
-
     maven("https://android-sdk.is.com/")
     maven("https://artifact.bytedance.com/repository/pangle/")
     maven("https://cboost.jfrog.io/artifactory/chartboost-ads/")
@@ -69,14 +61,7 @@ repositories {
 }
 
 dependencies {
-    // Add Firebase
-    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
-
-    // Add Playwire total for a Standard/NonCOPPA integration
-    implementation("com.intergi.playwire:playwiresdk_total:11.6.0")
-    // OR
-    // Add Playwire COPPA for a COPPA app
-//     implementation("com.intergi.playwire:playwiresdk_coppa:11.6.0")
+    implementation("com.intergi.playwire:playwiresdk_total:12.0.0")
 
     implementation("com.google.android.material:material:1.13.0")
 

@@ -6,17 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.demo_kotlin.BuildConfig
 import com.example.demo_kotlin.R
 import com.example.demo_kotlin.ads.fullscreen.app_open.AppOpenAdActivity
 import com.example.demo_kotlin.ads.fullscreen.interstitial.InterstitialActivity
 import com.example.demo_kotlin.ads.fullscreen.rewarded.RewardedActivity
 import com.example.demo_kotlin.ads.view.banner.BannerActivity
 import com.example.demo_kotlin.ads.view.nativead.NativeAdActivity
+import com.example.demo_kotlin.misc.Constant
 import com.intergi.playwiresdk.PWAdMode
 import com.intergi.playwiresdk.PWNotifier
 import com.intergi.playwiresdk.PlaywireSDK
-import com.example.demo_kotlin.misc.Constant
 
 class AdTypesActivity: AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -29,12 +28,10 @@ class AdTypesActivity: AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        // Enable test mode for debug builds to avoid `no fill` issues and be able to test your implementation with test ads.
-        if (BuildConfig.DEBUG) {
-            // Start `PWNotifier` to log SDK events to console.
-            PWNotifier.startConsoleLogger()
-            PlaywireSDK.test = true
-        }
+        // Start `PWNotifier` to log SDK events to console.
+        PWNotifier.startConsoleLogger()
+        // Set to `true` to test your implementation with GAM test ads on real devices.
+        PlaywireSDK.test = false
 
         // Initialize Playwire SDK with `publisherId` and `appId`, when initialization done, you will be able to load ad units.
         // Make sure you run SDK initialization only once.

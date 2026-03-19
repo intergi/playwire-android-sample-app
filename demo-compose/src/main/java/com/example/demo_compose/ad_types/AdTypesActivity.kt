@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.demo_compose.BuildConfig
 import com.example.demo_compose.ads.fullscreen.app_open.AppOpenAdActivity
 import com.example.demo_compose.ads.fullscreen.interstitial.InterstitialActivity
 import com.example.demo_compose.ads.fullscreen.rewarded.RewardedActivity
@@ -54,10 +53,9 @@ fun AdTypesScreen(activity: Activity) {
     val adUnits = remember { mutableStateListOf<Pair<PWAdMode, String>>() }
 
     LaunchedEffect(Unit) {
-        if (BuildConfig.DEBUG) {
-            PWNotifier.startConsoleLogger()
-            PlaywireSDK.test = true
-        }
+        PWNotifier.startConsoleLogger()
+        PlaywireSDK.test = false
+
         PlaywireSDK.initialize("1024407", "703", activity) {
             adUnits.addAll(PlaywireSDK.getConfig()?.adUnits?.map {
                 Pair(it.mode, it.name)

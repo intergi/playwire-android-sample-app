@@ -10,7 +10,6 @@ import androidx.core.util.Pair;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.demo_java.BuildConfig;
 import com.example.demo_java.R;
 import com.example.demo_java.ads.fullscreen.app_open.AppOpenAdActivity;
 import com.example.demo_java.ads.fullscreen.interstitial.InterstitialActivity;
@@ -38,10 +37,8 @@ public class AdTypesActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (BuildConfig.DEBUG) {
-            PWNotifier.INSTANCE.startConsoleLogger();
-            PlaywireSDK.INSTANCE.setTest(true);
-        }
+        PWNotifier.INSTANCE.startConsoleLogger();
+        PlaywireSDK.INSTANCE.setTest(false);
 
         PlaywireSDK.INSTANCE.initialize("1024407", "703", this, () -> {
             setupRecyclerView();

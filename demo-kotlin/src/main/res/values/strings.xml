@@ -30,4 +30,7 @@
     <string name="native_ad_load_failed">❌ Failed to load the native ad \"%1$s\"..</string>
     <string name="native_ad_shown">👍 The native ad content \"%1$s\" was successfully shown.</string>
     <string name="native_ad_loading">⏳ The native ad \"%1$s\" is loading.</string>
+    <string name="native_ad_opened">Native ad opened: %1$s</string>
+    <string name="native_ad_impressed">Native ad impressed: %1$s</string>
+    <string name="native_ad_clicked">Native ad clicked: %1$s</string>
 </resources>

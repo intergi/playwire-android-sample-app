@@ -1,54 +1,54 @@
 package com.example.demo_compose.ads.view.nativead
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.graphics.drawable.toBitmap
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.example.demo_compose.R
 import com.example.demo_compose.misc.Constant
 import com.example.demo_compose.ui.theme.PlaywireAppTheme
 import com.intergi.playwiresdk.ads.view.PWViewAd
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeView
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContent
+import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContentView
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewFactory
 
 class NativeAdActivity : ComponentActivity() {
 
     private var nativeAd: PWNativeView? = null
+    private var nativeAdHost: FrameLayout? = null
     private lateinit var adUnitName: String
-    private val statusText = mutableStateOf("Ad status will be displayed here")
-    private val isAdLoaded = mutableStateOf(false)
+    private var statusText by mutableStateOf("Ad status will be displayed here")
+    private var isAdLoaded by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +56,13 @@ class NativeAdActivity : ComponentActivity() {
 
         setContent {
             PlaywireAppTheme {
-                NativeAdScreen(adUnitName, statusText.value)  { onBackPressedDispatcher.onBackPressed() }
+                NativeAdScreen(
+                    adUnitName = adUnitName,
+                    statusText = statusText,
+                    isAdLoaded = isAdLoaded,
+                    nativeAdHostProvider = { nativeAdHost },
+                    onNavigateUp = { onBackPressedDispatcher.onBackPressed() }
+                )
             }
         }
 
@@ -65,34 +71,62 @@ class NativeAdActivity : ComponentActivity() {
 
     private fun loadNativeAd() {
         val factory = object : PWNativeViewFactory {
-            override fun createAdContentView(nativeView: PWNativeView, adContent: PWNativeViewContent): View {
-                return ComposeView(this@NativeAdActivity).apply {
-                    setContent {
-                        NativeAdView(adContent)
-                    }
-                }
-            }
-
-            override fun callToActionView(nativeView: PWNativeView, adContentView: View): View? {
-                return adContentView.findViewWithTag("call_to_action")
+            override fun createAdContentView(): PWNativeViewContentView {
+                return ComposeNativeContentView(this@NativeAdActivity)
             }
         }
 
         val listener = object : PWViewAd.Listener {
             override fun onViewAdLoaded(ad: PWViewAd) {
-                statusText.value = getString(R.string.native_ad_loaded, adUnitName)
-                isAdLoaded.value = true
+                statusText = getString(R.string.native_ad_loaded, adUnitName)
+                isAdLoaded = true
+
+                nativeAd?.layoutParams = FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                nativeAd?.requestLayout()
+                nativeAdHost?.requestLayout()
             }
 
             override fun onViewAdFailedToLoad(ad: PWViewAd) {
-                statusText.value = getString(R.string.native_ad_load_failed, adUnitName)
+                statusText = getString(R.string.native_ad_load_failed, adUnitName)
+            }
+
+            override fun onViewAdOpened(ad: PWViewAd) {
+                statusText = "Native ad opened: $adUnitName"
+            }
+
+            override fun onViewAdClosed(ad: PWViewAd) {
+                statusText = getString(R.string.native_ad_shown, adUnitName)
+            }
+
+            override fun onViewAdImpression(ad: PWViewAd) {
+                statusText = "Native ad impression recorded: $adUnitName"
+            }
+
+            override fun onViewAdClicked(ad: PWViewAd) {
+                statusText = "Native ad clicked: $adUnitName"
             }
         }
 
-        nativeAd = PWNativeView(this, adUnitName, factory, listener)
-        nativeAd?.load()
+        nativeAd = PWNativeView(this, adUnitName, factory, listener).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
 
-        statusText.value = getString(R.string.native_ad_loading, adUnitName)
+        nativeAdHost = FrameLayout(this).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            addView(nativeAd)
+        }
+
+        nativeAd?.load()
+        statusText = getString(R.string.native_ad_loading, adUnitName)
     }
 
     override fun onDestroy() {
@@ -104,16 +138,18 @@ class NativeAdActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NativeAdScreen(
-    adUnitName: String?,
+    adUnitName: String,
     statusText: String,
+    isAdLoaded: Boolean,
+    nativeAdHostProvider: () -> FrameLayout?,
     onNavigateUp: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = adUnitName ?: "Native Ad") },
+                title = { Text(text = adUnitName) },
                 navigationIcon = {
-                    IconButton(onClick = { onNavigateUp }) {
+                    IconButton(onClick = onNavigateUp) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back Button"
@@ -123,64 +159,182 @@ fun NativeAdScreen(
             )
         }
     ) { paddingValues ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .padding(16.dp)
         ) {
-            Text(
-                text = statusText,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Text(text = statusText)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (isAdLoaded) {
+                AndroidView(
+                    modifier = Modifier.fillMaxWidth(),
+                    factory = { nativeAdHostProvider()!! },
+                    update = { host ->
+                        host.layoutParams = FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                        host.requestLayout()
+                    }
+                )
+            }
         }
     }
 }
 
-@Composable
-fun NativeAdView(adContent: PWNativeViewContent) {
-    Card(
-        modifier = Modifier.padding(8.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                adContent.icon?.let {
-                    Image(bitmap = it.toBitmap().asImageBitmap(), contentDescription = null, modifier = Modifier.size(40.dp))
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Column {
-                    adContent.headline?.let { Text(text = it, style = MaterialTheme.typography.headlineSmall) }
-                    adContent.advertiser?.let { Text(text = it, style = MaterialTheme.typography.bodyMedium) }
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            adContent.body?.let { Text(text = it, style = MaterialTheme.typography.bodyLarge) }
-            Spacer(modifier = Modifier.height(8.dp))
-            adContent.mediaView?.let {
-                AndroidView(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(175.dp)
-                    ,
-                    factory = { context -> it }
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                adContent.price?.let { Text(text = it, style = MaterialTheme.typography.bodySmall) }
-                Spacer(modifier = Modifier.width(8.dp))
-                adContent.store?.let { Text(text = it, style = MaterialTheme.typography.bodySmall) }
-                Spacer(modifier = Modifier.width(8.dp))
-                adContent.callToAction?.let {
-                    AndroidView(
-                        factory = { context ->
-                            android.widget.Button(context).apply {
-                                text = it
-                                tag = "call_to_action"
-                            }
-                        }
-                    )
-                }
-            }
+private class ComposeNativeContentView(context: Context) :
+    ConstraintLayout(context), PWNativeViewContentView {
+
+    private val attributionView = TextView(context).apply {
+        id = View.generateViewId()
+        text = "Ad"
+        textSize = 10f
+        setPadding(12, 6, 12, 6)
+    }
+
+    private val iconView = ImageView(context).apply {
+        id = View.generateViewId()
+    }
+
+    private val headlineView = TextView(context).apply {
+        id = View.generateViewId()
+        textSize = 16f
+    }
+
+    private val advertiserView = TextView(context).apply {
+        id = View.generateViewId()
+        textSize = 14f
+    }
+
+    private val bodyView = TextView(context).apply {
+        id = View.generateViewId()
+        textSize = 12f
+    }
+
+    private val mediaContainer = FrameLayout(context).apply {
+        id = View.generateViewId()
+        minimumHeight = 220
+    }
+
+    private val priceView = TextView(context).apply {
+        id = View.generateViewId()
+        textSize = 12f
+    }
+
+    private val storeView = TextView(context).apply {
+        id = View.generateViewId()
+        textSize = 12f
+    }
+
+    private val ctaButton = Button(context).apply {
+        id = View.generateViewId()
+        textSize = 12f
+    }
+
+    init {
+        id = View.generateViewId()
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        setPadding(32, 20, 32, 24)
+
+        addView(attributionView)
+        addView(iconView)
+        addView(headlineView)
+        addView(advertiserView)
+        addView(bodyView)
+        addView(mediaContainer)
+        addView(priceView)
+        addView(storeView)
+        addView(ctaButton)
+
+        val set = ConstraintSet()
+        set.clone(this)
+
+        set.connect(attributionView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        set.connect(attributionView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+
+        set.constrainWidth(iconView.id, 72)
+        set.constrainHeight(iconView.id, 72)
+        set.connect(iconView.id, ConstraintSet.TOP, attributionView.id, ConstraintSet.BOTTOM, 16)
+        set.connect(iconView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+
+        set.connect(headlineView.id, ConstraintSet.TOP, iconView.id, ConstraintSet.TOP)
+        set.connect(headlineView.id, ConstraintSet.START, iconView.id, ConstraintSet.END, 16)
+        set.connect(headlineView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        set.constrainWidth(headlineView.id, 0)
+
+        set.connect(advertiserView.id, ConstraintSet.TOP, headlineView.id, ConstraintSet.BOTTOM, 8)
+        set.connect(advertiserView.id, ConstraintSet.START, headlineView.id, ConstraintSet.START)
+        set.connect(advertiserView.id, ConstraintSet.END, headlineView.id, ConstraintSet.END)
+        set.constrainWidth(advertiserView.id, 0)
+
+        set.connect(bodyView.id, ConstraintSet.TOP, iconView.id, ConstraintSet.BOTTOM, 16)
+        set.connect(bodyView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        set.connect(bodyView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        set.constrainWidth(bodyView.id, 0)
+
+        set.connect(mediaContainer.id, ConstraintSet.TOP, bodyView.id, ConstraintSet.BOTTOM, 16)
+        set.connect(mediaContainer.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        set.connect(mediaContainer.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        set.constrainWidth(mediaContainer.id, 0)
+        set.constrainHeight(mediaContainer.id, 220)
+
+        set.connect(ctaButton.id, ConstraintSet.TOP, mediaContainer.id, ConstraintSet.BOTTOM, 16)
+        set.connect(ctaButton.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        set.connect(ctaButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+        set.connect(storeView.id, ConstraintSet.END, ctaButton.id, ConstraintSet.START, 16)
+        set.connect(storeView.id, ConstraintSet.TOP, ctaButton.id, ConstraintSet.TOP)
+        set.connect(storeView.id, ConstraintSet.BOTTOM, ctaButton.id, ConstraintSet.BOTTOM)
+
+        set.connect(priceView.id, ConstraintSet.END, storeView.id, ConstraintSet.START, 16)
+        set.connect(priceView.id, ConstraintSet.TOP, ctaButton.id, ConstraintSet.TOP)
+        set.connect(priceView.id, ConstraintSet.BOTTOM, ctaButton.id, ConstraintSet.BOTTOM)
+
+        set.applyTo(this)
+    }
+
+    override val headlineTextView: TextView
+        get() = headlineView
+
+    override val adAttributionView: TextView
+        get() = attributionView
+
+    override val mediaView: ViewGroup
+        get() = mediaContainer
+
+    override val callToActionButton: Button?
+        get() = ctaButton
+
+    override val bodyTextView: TextView?
+        get() = bodyView
+
+    override val iconImageView: ImageView?
+        get() = iconView
+
+    override val advertiserTextView: TextView?
+        get() = advertiserView
+
+    override val storeTextView: TextView?
+        get() = storeView
+
+    override val priceTextView: TextView?
+        get() = priceView
+
+    override fun didSetAdContent(adContent: PWNativeViewContent) {
+        val params = mediaContainer.layoutParams
+        params.height = if (adContent.mediaAspectRatio != null) {
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        } else {
+            220
         }
+        mediaContainer.layoutParams = params
+        requestLayout()
     }
 }

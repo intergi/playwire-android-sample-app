@@ -2,6 +2,7 @@ package com.example.demo_kotlin.ad_types
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,8 +36,16 @@ class AdTypesActivity: AppCompatActivity() {
 
         // Initialize Playwire SDK with `publisherId` and `appId`, when initialization done, you will be able to load ad units.
         // Make sure you run SDK initialization only once.
-        PlaywireSDK.initialize("1024407", "703", this) {
-            setupRecyclerView()
+        PlaywireSDK.start("1024407", "703", this) { success, error ->
+            if (success) {
+                setupRecyclerView()
+            } else {
+                Toast.makeText(
+                    this,
+                    error?.message ?: "Playwire SDK initialization failed.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

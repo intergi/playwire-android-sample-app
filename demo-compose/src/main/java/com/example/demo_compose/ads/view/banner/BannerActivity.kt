@@ -74,7 +74,7 @@ fun BannerAdScreen(adUnitName: String?, statusText: String, isAdLoaded: Boolean,
             TopAppBar(
                 title = { Text(text = adUnitName ?: "Banner Ad") },
                 navigationIcon = {
-                    IconButton(onClick = { onNavigateUp }) {
+                    IconButton(onClick = onNavigateUp) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back Button"

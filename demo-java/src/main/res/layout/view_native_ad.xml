@@ -8,26 +8,42 @@
     android:layout_marginHorizontal="16dp"
     android:background="#FFFFFF"
     android:minHeight="50dp"
-    android:paddingLeft="20dp"
-    android:paddingTop="3dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="10dp">
+    android:paddingStart="20dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="12dp">
+
+    <TextView
+        android:id="@+id/ad_attribution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#E0E0E0"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"
+        android:text="Ad"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ad_app_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/ad_app_icon"
         android:paddingHorizontal="5dp"
         android:paddingBottom="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/ad_attribution" />
 
     <TextView
         android:id="@+id/ad_headline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:textColor="#673AB7"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -40,6 +56,7 @@
         android:id="@+id/ad_advertiser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:gravity="bottom"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -62,23 +79,24 @@
 
     <FrameLayout
         android:id="@+id/ad_media"
-        android:layout_width="250dp"
+        android:layout_width="0dp"
         android:layout_height="175dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ad_body" />
 
-    <Button
-        android:id="@+id/ad_call_to_action"
+    <TextView
+        android:id="@+id/ad_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
+        android:paddingHorizontal="5dp"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ad_media"
-        tools:text="Install" />
+        app:layout_constraintBottom_toBottomOf="@id/ad_call_to_action"
+        app:layout_constraintEnd_toStartOf="@id/ad_store"
+        app:layout_constraintTop_toTopOf="@id/ad_call_to_action"
+        tools:text="$1.99" />
 
     <TextView
         android:id="@+id/ad_store"
@@ -91,15 +109,16 @@
         app:layout_constraintTop_toTopOf="@id/ad_call_to_action"
         tools:text="Google Play" />
 
-    <TextView
-        android:id="@+id/ad_price"
+    <Button
+        android:id="@+id/ad_call_to_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="5dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/ad_call_to_action"
-        app:layout_constraintEnd_toStartOf="@id/ad_store"
-        app:layout_constraintTop_toTopOf="@id/ad_call_to_action"
-        tools:text="$1.99" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ad_media"
+        tools:text="Install" />
 
 </com.example.demo_java.ads.view.nativead.NativeView>

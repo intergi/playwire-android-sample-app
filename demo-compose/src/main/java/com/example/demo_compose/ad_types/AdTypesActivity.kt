@@ -59,7 +59,6 @@ fun AdTypesScreen(activity: Activity) {
 
         PlaywireSDK.start("1024407", "703", activity) { success, error ->
             if (success) {
-                adUnits.clear()
                 adUnits.addAll(
                     PlaywireSDK.getConfig()?.adUnits?.map {
                         Pair(it.mode, it.name)

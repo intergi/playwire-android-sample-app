@@ -44,7 +44,7 @@ import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewFactory
 
 class NativeAdActivity : ComponentActivity() {
 
-    private var nativeAd: PWNativeView? = null
+    private var nativeAdView: PWNativeView? = null
     private var nativeAdHost: FrameLayout? = null
     private lateinit var adUnitName: String
     private var statusText by mutableStateOf("Ad status will be displayed here")
@@ -80,12 +80,6 @@ class NativeAdActivity : ComponentActivity() {
             override fun onViewAdLoaded(ad: PWViewAd) {
                 statusText = getString(R.string.native_ad_loaded, adUnitName)
                 isAdLoaded = true
-
-                nativeAd?.layoutParams = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                nativeAd?.requestLayout()
                 nativeAdHost?.requestLayout()
             }
 
@@ -110,7 +104,7 @@ class NativeAdActivity : ComponentActivity() {
             }
         }
 
-        nativeAd = PWNativeView(this, adUnitName, factory, listener).apply {
+        nativeAdView = PWNativeView(this, adUnitName, factory, listener).apply {
             layoutParams = FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -122,15 +116,15 @@ class NativeAdActivity : ComponentActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            addView(nativeAd)
+            addView(nativeAdView)
         }
 
-        nativeAd?.load()
+        nativeAdView?.load()
         statusText = getString(R.string.native_ad_loading, adUnitName)
     }
 
     override fun onDestroy() {
-        nativeAd?.destroy()
+        nativeAdView?.destroy()
         super.onDestroy()
     }
 }

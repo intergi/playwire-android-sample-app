@@ -2,11 +2,11 @@ package com.example.demo_compose.ads.view.nativead
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -187,74 +187,83 @@ fun NativeAdScreen(
 }
 
 private class ComposeNativeContentView(context: Context) :
-    ConstraintLayout(context), PWNativeViewContentView {
+    LinearLayout(context), PWNativeViewContentView {
+
+    private val topSection = ConstraintLayout(context).apply {
+        id = generateViewId()
+        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+    }
 
     private val attributionView = TextView(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
         text = "Ad"
         textSize = 10f
         setPadding(12, 6, 12, 6)
     }
 
     private val iconView = ImageView(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
     }
 
     private val headlineView = TextView(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
         textSize = 16f
     }
 
     private val advertiserView = TextView(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
         textSize = 14f
     }
 
     private val bodyView = TextView(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
         textSize = 12f
     }
 
     private val mediaContainer = FrameLayout(context).apply {
-        id = View.generateViewId()
-        minimumHeight = 220
+        id = generateViewId()
+    }
+
+    private val bottomRow = LinearLayout(context).apply {
+        id = generateViewId()
+        orientation = HORIZONTAL
+        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+            topMargin = (16 * context.resources.displayMetrics.density).toInt()
+        }
     }
 
     private val priceView = TextView(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
         textSize = 12f
     }
 
     private val storeView = TextView(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
         textSize = 12f
     }
 
     private val ctaButton = Button(context).apply {
-        id = View.generateViewId()
+        id = generateViewId()
         textSize = 12f
     }
 
     init {
-        id = View.generateViewId()
+        orientation = VERTICAL
+        id = generateViewId()
         layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
         )
         setPadding(32, 20, 32, 24)
 
-        addView(attributionView)
-        addView(iconView)
-        addView(headlineView)
-        addView(advertiserView)
-        addView(bodyView)
-        addView(mediaContainer)
-        addView(priceView)
-        addView(storeView)
-        addView(ctaButton)
+        topSection.addView(attributionView)
+        topSection.addView(iconView)
+        topSection.addView(headlineView)
+        topSection.addView(advertiserView)
+        topSection.addView(bodyView)
 
         val set = ConstraintSet()
-        set.clone(this)
+        set.clone(topSection)
 
         set.connect(attributionView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
         set.connect(attributionView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
@@ -274,65 +283,47 @@ private class ComposeNativeContentView(context: Context) :
         set.connect(advertiserView.id, ConstraintSet.END, headlineView.id, ConstraintSet.END)
         set.constrainWidth(advertiserView.id, 0)
 
-        set.connect(bodyView.id, ConstraintSet.TOP, iconView.id, ConstraintSet.BOTTOM, 16)
+        set.connect(bodyView.id, ConstraintSet.TOP, advertiserView.id, ConstraintSet.BOTTOM, 16)
         set.connect(bodyView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
         set.connect(bodyView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
         set.constrainWidth(bodyView.id, 0)
+        set.connect(bodyView.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
 
-        set.connect(mediaContainer.id, ConstraintSet.TOP, bodyView.id, ConstraintSet.BOTTOM, 16)
-        set.connect(mediaContainer.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-        set.connect(mediaContainer.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-        set.constrainWidth(mediaContainer.id, 0)
-        set.constrainHeight(mediaContainer.id, 220)
+        set.applyTo(topSection)
 
-        set.connect(ctaButton.id, ConstraintSet.TOP, mediaContainer.id, ConstraintSet.BOTTOM, 16)
-        set.connect(ctaButton.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-        set.connect(ctaButton.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        val spacer1 = TextView(context).apply {
+            layoutParams = LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f)
+        }
+        bottomRow.addView(priceView)
+        bottomRow.addView(storeView)
+        bottomRow.addView(spacer1)
+        bottomRow.addView(ctaButton)
 
-        set.connect(storeView.id, ConstraintSet.END, ctaButton.id, ConstraintSet.START, 16)
-        set.connect(storeView.id, ConstraintSet.TOP, ctaButton.id, ConstraintSet.TOP)
-        set.connect(storeView.id, ConstraintSet.BOTTOM, ctaButton.id, ConstraintSet.BOTTOM)
+        val mediaParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+            topMargin = (16 * context.resources.displayMetrics.density).toInt()
+        }
 
-        set.connect(priceView.id, ConstraintSet.END, storeView.id, ConstraintSet.START, 16)
-        set.connect(priceView.id, ConstraintSet.TOP, ctaButton.id, ConstraintSet.TOP)
-        set.connect(priceView.id, ConstraintSet.BOTTOM, ctaButton.id, ConstraintSet.BOTTOM)
-
-        set.applyTo(this)
+        addView(topSection)
+        addView(mediaContainer, mediaParams)
+        addView(bottomRow)
     }
 
-    override val headlineTextView: TextView
-        get() = headlineView
-
-    override val adAttributionView: TextView
-        get() = attributionView
-
-    override val mediaView: ViewGroup
-        get() = mediaContainer
-
-    override val callToActionButton: Button?
-        get() = ctaButton
-
-    override val bodyTextView: TextView?
-        get() = bodyView
-
-    override val iconImageView: ImageView?
-        get() = iconView
-
-    override val advertiserTextView: TextView?
-        get() = advertiserView
-
-    override val storeTextView: TextView?
-        get() = storeView
-
-    override val priceTextView: TextView?
-        get() = priceView
+    override val headlineTextView: TextView get() = headlineView
+    override val adAttributionView: TextView get() = attributionView
+    override val mediaView: ViewGroup get() = mediaContainer
+    override val callToActionButton: Button? get() = ctaButton
+    override val bodyTextView: TextView? get() = bodyView
+    override val iconImageView: ImageView? get() = iconView
+    override val advertiserTextView: TextView? get() = advertiserView
+    override val storeTextView: TextView? get() = storeView
+    override val priceTextView: TextView? get() = priceView
 
     override fun didSetAdContent(adContent: PWNativeViewContent) {
         val params = mediaContainer.layoutParams
-        params.height = if (adContent.mediaAspectRatio != null) {
-            ViewGroup.LayoutParams.WRAP_CONTENT
+        params.height = if (adContent.mediaAspectRatio == null) {
+            Math.round(120 * resources.displayMetrics.density)
         } else {
-            220
+            LayoutParams.WRAP_CONTENT
         }
         mediaContainer.layoutParams = params
         requestLayout()

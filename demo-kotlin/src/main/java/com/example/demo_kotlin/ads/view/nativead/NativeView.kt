@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.demo_kotlin.R
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContent
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContentView
+import com.intergi.playwiresdk.extensions.dp
 
 class NativeView : ConstraintLayout, PWNativeViewContentView {
 
@@ -44,8 +45,16 @@ class NativeView : ConstraintLayout, PWNativeViewContentView {
         get() = findViewById(R.id.ad_price)
 
     override fun didSetAdContent(adContent: PWNativeViewContent) {
-        val params = mediaView.layoutParams
-        params.height = LayoutParams.WRAP_CONTENT
+        val params = mediaView.layoutParams as? LayoutParams ?: return
+
+        params.dimensionRatio = null
+
+        if (adContent.mediaAspectRatio == null) {
+            params.height = 120.dp
+        } else {
+            params.height = LayoutParams.WRAP_CONTENT
+        }
+
         mediaView.layoutParams = params
     }
 }

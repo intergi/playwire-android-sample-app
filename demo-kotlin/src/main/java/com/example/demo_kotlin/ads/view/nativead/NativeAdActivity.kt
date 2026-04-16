@@ -2,12 +2,11 @@ package com.example.demo_kotlin.ads.view.nativead
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.demo_kotlin.R
 import com.example.demo_kotlin.misc.Constant
 import com.intergi.playwiresdk.ads.view.PWViewAd
@@ -18,7 +17,7 @@ import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewFactory
 class NativeAdActivity : AppCompatActivity() {
 
     private lateinit var adUnitName: String
-    private lateinit var constraintLayout: ConstraintLayout
+    private lateinit var nativeAdContainer: FrameLayout
     private lateinit var statusTextView: TextView
     private lateinit var nativeAd: PWNativeView
     private var isNativeAdded = false
@@ -34,7 +33,7 @@ class NativeAdActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        constraintLayout = findViewById(R.id.container)
+        nativeAdContainer = findViewById(R.id.native_ad_container)
         statusTextView = findViewById(R.id.status_text_view)
 
         loadNativeAd()
@@ -100,21 +99,12 @@ class NativeAdActivity : AppCompatActivity() {
         if (isNativeAdded) return
         isNativeAdded = true
 
-        nativeAd.id = View.generateViewId()
-
-        val layoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.MATCH_PARENT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-            startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-            endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-        }
-
-        constraintLayout.addView(nativeAd, layoutParams)
-
-        val statusParams = statusTextView.layoutParams as ConstraintLayout.LayoutParams
-        statusParams.bottomToTop = nativeAd.id
-        statusTextView.layoutParams = statusParams
+        nativeAdContainer.addView(
+            nativeAd,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        )
     }
 }

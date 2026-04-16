@@ -2,15 +2,14 @@ package com.example.demo_java.ads.view.nativead;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.demo_java.R;
 import com.example.demo_java.misc.Constant;
@@ -21,7 +20,7 @@ import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewFactory;
 
 public class NativeAdActivity extends AppCompatActivity {
     private String adUnitName;
-    private ConstraintLayout constraintLayout;
+    private FrameLayout nativeAdContainer;
     private TextView statusTextView;
     private PWNativeView nativeAd;
     private boolean isNativeAdded = false;
@@ -43,7 +42,7 @@ public class NativeAdActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        constraintLayout = findViewById(R.id.container);
+        nativeAdContainer = findViewById(R.id.native_ad_container);
         statusTextView = findViewById(R.id.status_text_view);
 
         loadNativeAd();
@@ -123,22 +122,12 @@ public class NativeAdActivity extends AppCompatActivity {
         }
         isNativeAdded = true;
 
-        nativeAd.setId(View.generateViewId());
-
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        nativeAdContainer.addView(
+                nativeAd,
+                new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                )
         );
-
-        layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-
-        constraintLayout.addView(nativeAd, layoutParams);
-
-        ConstraintLayout.LayoutParams statusParams =
-                (ConstraintLayout.LayoutParams) statusTextView.getLayoutParams();
-        statusParams.bottomToTop = nativeAd.getId();
-        statusTextView.setLayoutParams(statusParams);
     }
 }

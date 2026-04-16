@@ -73,8 +73,18 @@ public class NativeView extends ConstraintLayout implements PWNativeViewContentV
 
     @Override
     public void didSetAdContent(PWNativeViewContent adContent) {
-        ViewGroup.LayoutParams params = getMediaView().getLayoutParams();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        ConstraintLayout.LayoutParams params =
+                (ConstraintLayout.LayoutParams) getMediaView().getLayoutParams();
+
+        params.dimensionRatio = null;
+
+        if (adContent.getMediaAspectRatio() == null) {
+            int px = Math.round(120 * getResources().getDisplayMetrics().density);
+            params.height = px;
+        } else {
+            params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+        }
+
         getMediaView().setLayoutParams(params);
     }
 }

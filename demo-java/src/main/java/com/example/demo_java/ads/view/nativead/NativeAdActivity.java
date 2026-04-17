@@ -2,6 +2,7 @@ package com.example.demo_java.ads.view.nativead;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -70,11 +71,17 @@ public class NativeAdActivity extends AppCompatActivity {
             @Override
             public void onViewAdLoaded(@NonNull PWViewAd ad) {
                 addNativeAd();
+                nativeAd.setVisibility(View.VISIBLE);
+                nativeAdContainer.setVisibility(View.VISIBLE);
                 statusTextView.setText(getString(R.string.native_ad_loaded, adUnitName));
             }
 
             @Override
             public void onViewAdFailedToLoad(@NonNull PWViewAd ad) {
+                if (nativeAd != null) {
+                    nativeAd.setVisibility(View.GONE);
+                }
+                nativeAdContainer.setVisibility(View.GONE);
                 statusTextView.setText(getString(R.string.native_ad_load_failed, adUnitName));
             }
 
@@ -111,6 +118,9 @@ public class NativeAdActivity extends AppCompatActivity {
         };
 
         nativeAd = new PWNativeView(this, adUnitName, factory, listener);
+        nativeAd.setVisibility(View.GONE);
+        nativeAdContainer.setVisibility(View.GONE);
+
         nativeAd.load();
 
         statusTextView.setText(getString(R.string.native_ad_loading, adUnitName));

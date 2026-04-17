@@ -2,6 +2,7 @@ package com.example.demo_kotlin.ads.view.nativead
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -56,10 +57,14 @@ class NativeAdActivity : AppCompatActivity() {
         val listener = object : PWViewAd.Listener {
             override fun onViewAdLoaded(ad: PWViewAd) {
                 addNativeAd()
+                nativeAd.visibility = View.VISIBLE
+                nativeAdContainer.visibility = View.VISIBLE
                 statusTextView.text = getString(R.string.native_ad_loaded, adUnitName)
             }
 
             override fun onViewAdFailedToLoad(ad: PWViewAd) {
+                nativeAd.visibility = View.GONE
+                nativeAdContainer.visibility = View.GONE
                 statusTextView.text = getString(R.string.native_ad_load_failed, adUnitName)
             }
 
@@ -90,6 +95,9 @@ class NativeAdActivity : AppCompatActivity() {
         }
 
         nativeAd = PWNativeView(this, adUnitName, factory, listener)
+        nativeAd.visibility = View.GONE
+        nativeAdContainer.visibility = View.GONE
+
         nativeAd.load()
 
         statusTextView.text = getString(R.string.native_ad_loading, adUnitName)

@@ -13,7 +13,7 @@ import com.intergi.playwiresdk.ads.view.PWViewAd
 import com.intergi.playwiresdk.ads.view.banner.PWBannerView
 import com.example.demo_kotlin.misc.Constant
 
-class BannerActivity: AppCompatActivity() {
+class BannerActivity : AppCompatActivity() {
     // The ad unit name, e.g. 'banner-320x50', 'interstitial-home', 'rewarded-coins', etc.
     private lateinit var adUnitName: String
     private lateinit var constraintLayout: ConstraintLayout
@@ -53,13 +53,15 @@ class BannerActivity: AppCompatActivity() {
     }
 
     private fun loadBanner() {
-        val listener = object: PWViewAd.Listener {
+        val listener = object : PWViewAd.Listener {
             override fun onViewAdLoaded(ad: PWViewAd) {
-                statusTextView.text = getString(R.string.banner_ad_loaded, adUnitName)
                 addBannerToParent()
+                banner.visibility = View.VISIBLE
+                statusTextView.text = getString(R.string.banner_ad_loaded, adUnitName)
             }
 
             override fun onViewAdFailedToLoad(ad: PWViewAd) {
+                banner.visibility = View.GONE
                 statusTextView.text = getString(R.string.banner_ad_load_failed, adUnitName)
             }
         }
@@ -67,14 +69,15 @@ class BannerActivity: AppCompatActivity() {
         banner = PWBannerView(this, adUnitName, listener)
 
         // Use `PWLoadParams().withTargeting()` to pass your custom targets to ad request.
-//         val params = PWLoadParams().withTargeting(
-//           mapOf(
-//              "age" to "18-32",
-//              "page" to "travel"
-//           )
-//         )
-//         banner?.load(params)
+        // val params = PWLoadParams().withTargeting(
+        //   mapOf(
+        //      "age" to "18-32",
+        //      "page" to "travel"
+        //   )
+        // )
+        // banner.load(params)
 
+        banner.visibility = View.GONE
         banner.load()
 
         statusTextView.text = getString(R.string.banner_ad_loading, adUnitName)

@@ -1,9 +1,12 @@
 package com.example.demo_compose.ads.view.banner
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,7 +15,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -35,7 +39,13 @@ class BannerActivity : ComponentActivity() {
 
         setContent {
             PlaywireAppTheme {
-                BannerAdScreen(adUnitName, statusText.value, isAdLoaded.value, { banner }) { onBackPressedDispatcher.onBackPressed() }
+                BannerAdScreen(
+                    adUnitName = adUnitName,
+                    statusText = statusText.value,
+                    isAdLoaded = isAdLoaded.value,
+                    bannerProvider = { banner },
+                    onNavigateUp = { onBackPressedDispatcher.onBackPressed() }
+                )
             }
         }
 
@@ -45,19 +55,25 @@ class BannerActivity : ComponentActivity() {
     private fun loadBanner() {
         val listener = object : PWViewAd.Listener {
             override fun onViewAdLoaded(ad: PWViewAd) {
+                banner?.visibility = View.VISIBLE
                 statusText.value = getString(R.string.banner_ad_loaded, adUnitName)
                 isAdLoaded.value = true
             }
 
             override fun onViewAdFailedToLoad(ad: PWViewAd) {
+                banner?.visibility = View.GONE
                 statusText.value = getString(R.string.banner_ad_load_failed, adUnitName)
+                isAdLoaded.value = false
             }
         }
 
-        banner = PWBannerView(this, adUnitName, listener)
-        banner?.load()
+        banner = PWBannerView(this, adUnitName, listener).apply {
+            visibility = View.GONE
+        }
 
-        statusText.value = getString(R.string.banner_ad_loaded, adUnitName)
+        statusText.value = getString(R.string.banner_ad_loading, adUnitName)
+        isAdLoaded.value = false
+        banner?.load()
     }
 
     override fun onDestroy() {
@@ -68,7 +84,13 @@ class BannerActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BannerAdScreen(adUnitName: String?, statusText: String, isAdLoaded: Boolean, bannerProvider: () -> PWBannerView?, onNavigateUp: () -> Unit) {
+fun BannerAdScreen(
+    adUnitName: String?,
+    statusText: String,
+    isAdLoaded: Boolean,
+    bannerProvider: () -> PWBannerView?,
+    onNavigateUp: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -93,6 +115,7 @@ fun BannerAdScreen(adUnitName: String?, statusText: String, isAdLoaded: Boolean,
                 text = statusText,
                 modifier = Modifier.align(Alignment.Center)
             )
+
             if (isAdLoaded) {
                 AndroidView(
                     modifier = Modifier.align(Alignment.BottomCenter),

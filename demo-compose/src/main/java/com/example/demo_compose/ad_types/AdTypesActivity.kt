@@ -3,6 +3,7 @@ package com.example.demo_compose.ad_types
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -56,10 +57,20 @@ fun AdTypesScreen(activity: Activity) {
         PWNotifier.startConsoleLogger()
         PlaywireSDK.test = false
 
-        PlaywireSDK.initialize("1024407", "703", activity) {
-            adUnits.addAll(PlaywireSDK.getConfig()?.adUnits?.map {
-                Pair(it.mode, it.name)
-            } ?: emptyList())
+        PlaywireSDK.start("1024407", "703", activity) { success, error ->
+            if (success) {
+                adUnits.addAll(
+                    PlaywireSDK.getConfig()?.adUnits?.map {
+                        Pair(it.mode, it.name)
+                    } ?: emptyList()
+                )
+            } else {
+                Toast.makeText(
+                    context,
+                    error?.message ?: "Playwire SDK initialization failed.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

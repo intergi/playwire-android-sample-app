@@ -1,26 +1,27 @@
 package com.example.demo_java.ads.view.nativead;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.demo_java.R;
 import com.example.demo_java.misc.Constant;
 import com.intergi.playwiresdk.ads.view.PWViewAd;
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeView;
-import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContent;
+import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContentView;
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewFactory;
 
 public class NativeAdActivity extends AppCompatActivity {
     private String adUnitName;
-    private ConstraintLayout constraintLayout;
+    private FrameLayout nativeAdContainer;
     private TextView statusTextView;
     private PWNativeView nativeAd;
     private boolean isNativeAdded = false;
@@ -42,7 +43,7 @@ public class NativeAdActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        constraintLayout = findViewById(R.id.container);
+        nativeAdContainer = findViewById(R.id.native_ad_container);
         statusTextView = findViewById(R.id.status_text_view);
 
         loadNativeAd();
@@ -56,62 +57,70 @@ public class NativeAdActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void loadNativeAd() {
         PWViewAd.Listener listener = new PWViewAd.Listener() {
             @Override
-            public void onViewAdImpression(@NonNull PWViewAd pwViewAd) {
-
-            }
-
-            @Override
-            public void onViewAdClicked(@NonNull PWViewAd pwViewAd) {
-
-            }
-
-            @Override
-            public void onViewAdClosed(@NonNull PWViewAd pwViewAd) {
-                statusTextView.setText(getString(R.string.native_ad_shown, adUnitName));
-            }
-
-            @Override
-            public void onViewAdOpened(@NonNull PWViewAd pwViewAd) {
-
-            }
-
-            @Override
             public void onViewAdLoaded(@NonNull PWViewAd ad) {
                 addNativeAd();
+                nativeAd.setVisibility(View.VISIBLE);
+                nativeAdContainer.setVisibility(View.VISIBLE);
                 statusTextView.setText(getString(R.string.native_ad_loaded, adUnitName));
             }
 
             @Override
             public void onViewAdFailedToLoad(@NonNull PWViewAd ad) {
+                if (nativeAd != null) {
+                    nativeAd.setVisibility(View.GONE);
+                }
+                nativeAdContainer.setVisibility(View.GONE);
                 statusTextView.setText(getString(R.string.native_ad_load_failed, adUnitName));
+            }
+
+            @Override
+            public void onViewAdClosed(@NonNull PWViewAd ad) {
+                statusTextView.setText(getString(R.string.native_ad_shown, adUnitName));
+            }
+
+            @Override
+            public void onViewAdOpened(@NonNull PWViewAd ad) {
+                statusTextView.setText("Native ad opened: " + adUnitName);
+            }
+
+            @Override
+            public void onViewAdImpression(@NonNull PWViewAd ad) {
+                statusTextView.setText("Native ad impression recorded: " + adUnitName);
+            }
+
+            @Override
+            public void onViewAdClicked(@NonNull PWViewAd ad) {
+                statusTextView.setText("Native ad clicked: " + adUnitName);
             }
         };
 
         PWNativeViewFactory factory = new PWNativeViewFactory() {
             @NonNull
             @Override
-            public View createAdContentView(@NonNull PWNativeView nativeView, @NonNull PWNativeViewContent adContent) {
-                View adView = LayoutInflater.from(NativeAdActivity.this).inflate(R.layout.view_native_ad, null);
-                if (adView instanceof NativeView) {
-                    ((NativeView) adView).configure(adContent);
-                }
-                return adView;
-            }
-
-            @Nullable
-            @Override
-            public View callToActionView(@NonNull PWNativeView nativeView, @NonNull View adContentView) {
-                if (adContentView instanceof NativeView) {
-                    return ((NativeView) adContentView).getActionButton();
-                }
-                return null;
+            public PWNativeViewContentView createAdContentView() {
+                return (PWNativeViewContentView) getLayoutInflater().inflate(
+                        R.layout.view_native_ad,
+                        null
+                );
             }
         };
 
         nativeAd = new PWNativeView(this, adUnitName, factory, listener);
+        nativeAd.setVisibility(View.GONE);
+        nativeAdContainer.setVisibility(View.GONE);
+
         nativeAd.load();
 
         statusTextView.setText(getString(R.string.native_ad_loading, adUnitName));
@@ -123,21 +132,12 @@ public class NativeAdActivity extends AppCompatActivity {
         }
         isNativeAdded = true;
 
-        nativeAd.setId(View.generateViewId());
-
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        nativeAdContainer.addView(
+                nativeAd,
+                new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                )
         );
-
-        layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-
-        constraintLayout.addView(nativeAd, layoutParams);
-
-        ConstraintLayout.LayoutParams statusParams = (ConstraintLayout.LayoutParams) statusTextView.getLayoutParams();
-        statusParams.bottomToTop = nativeAd.getId();
-        statusTextView.setLayoutParams(statusParams);
     }
 }

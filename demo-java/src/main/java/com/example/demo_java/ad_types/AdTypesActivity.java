@@ -2,6 +2,7 @@ package com.example.demo_java.ad_types;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,9 +41,18 @@ public class AdTypesActivity extends AppCompatActivity {
         PWNotifier.INSTANCE.startConsoleLogger();
         PlaywireSDK.INSTANCE.setTest(false);
 
-        PlaywireSDK.INSTANCE.initialize("1024407", "703", this, () -> {
-            setupRecyclerView();
-            return null;
+        PlaywireSDK.INSTANCE.start("1024407", "703", this, (success, error) -> {
+            if (success) {
+                setupRecyclerView();
+            } else {
+                Toast.makeText(
+                        this,
+                        error != null && error.getMessage() != null
+                                ? error.getMessage()
+                                : "Playwire SDK initialization failed.",
+                        Toast.LENGTH_LONG
+                ).show();
+            }
         });
     }
 
@@ -67,7 +77,6 @@ public class AdTypesActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         adapter.submitList(adUnits);
     }
 

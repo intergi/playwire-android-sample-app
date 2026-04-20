@@ -2,72 +2,59 @@ package com.example.demo_kotlin.ads.view.nativead
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.demo_kotlin.R
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContent
+import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContentView
+import com.intergi.playwiresdk.extensions.dp
 
-class NativeView: LinearLayout {
+class NativeView : ConstraintLayout, PWNativeViewContentView {
+
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
-    private lateinit var headlineTextView: TextView
-    private lateinit var bodyTextView: TextView
-    internal lateinit var actionButton: Button
-    private lateinit var appIconImageView: ImageView
-    private lateinit var storeTextView: TextView
-    private lateinit var priceTextView: TextView
-    private lateinit var advertiserTextView: TextView
-    private lateinit var mediaViewHolder: FrameLayout
+    override val headlineTextView: TextView
+        get() = findViewById(R.id.ad_headline)
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    override val adAttributionView: TextView
+        get() = findViewById(R.id.ad_attribution)
 
-        appIconImageView = findViewById(R.id.ad_app_icon)
-        headlineTextView = findViewById(R.id.ad_headline)
-        bodyTextView = findViewById(R.id.ad_body)
-        actionButton = findViewById(R.id.ad_call_to_action)
-        storeTextView = findViewById(R.id.ad_store)
-        priceTextView = findViewById(R.id.ad_price)
-        advertiserTextView = findViewById(R.id.ad_advertiser)
-        mediaViewHolder = findViewById(R.id.ad_media)
-    }
+    override val mediaView: ViewGroup
+        get() = findViewById(R.id.ad_media)
 
-    internal fun configure(adContent: PWNativeViewContent) {
-        headlineTextView.visibility = visibleIf { adContent.headline != null }
-        headlineTextView.text = adContent.headline
+    override val callToActionButton: Button?
+        get() = findViewById(R.id.ad_call_to_action)
 
-        bodyTextView.visibility = visibleIf { adContent.body != null }
-        bodyTextView.text = adContent.body
+    override val bodyTextView: TextView?
+        get() = findViewById(R.id.ad_body)
 
-        actionButton.visibility = visibleIf { adContent.callToAction != null }
-        actionButton.text = adContent.callToAction
+    override val iconImageView: ImageView?
+        get() = findViewById(R.id.ad_app_icon)
 
-        priceTextView.visibility = visibleIf { adContent.price != null }
-        priceTextView.text = adContent.price
+    override val advertiserTextView: TextView?
+        get() = findViewById(R.id.ad_advertiser)
 
-        storeTextView.visibility = visibleIf { adContent.store != null }
-        storeTextView.text = adContent.store
+    override val storeTextView: TextView?
+        get() = findViewById(R.id.ad_store)
 
-        advertiserTextView.visibility = visibleIf { adContent.advertiser != null }
-        advertiserTextView.text = adContent.advertiser
+    override val priceTextView: TextView?
+        get() = findViewById(R.id.ad_price)
 
-        appIconImageView.visibility = visibleIf { adContent.icon != null }
-        appIconImageView.setImageDrawable(adContent.icon)
+    override fun didSetAdContent(adContent: PWNativeViewContent) {
+        val params = mediaView.layoutParams as? LayoutParams ?: return
 
-        mediaViewHolder.visibility = visibleIf { adContent.mediaView != null }
-        if (adContent.mediaView != null) {
-            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            params.gravity = Gravity.CENTER_HORIZONTAL
-            params.weight = 1.0f
-            adContent.mediaView?.layoutParams = params
-            mediaViewHolder.addView(adContent.mediaView)
+        params.dimensionRatio = null
+
+        if (adContent.mediaAspectRatio == null) {
+            params.height = 120.dp
+        } else {
+            params.height = LayoutParams.WRAP_CONTENT
         }
-    }
 
-    private fun visibleIf(isVisible: () -> Boolean): Int = if(isVisible()) VISIBLE else INVISIBLE
+        mediaView.layoutParams = params
+    }
 }

@@ -67,45 +67,36 @@ public class BannerActivity extends AppCompatActivity {
     private void loadBanner() {
         PWViewAd.Listener listener = new PWViewAd.Listener() {
             @Override
-            public void onViewAdImpression(@NonNull PWViewAd pwViewAd) {
-
-            }
+            public void onViewAdImpression(@NonNull PWViewAd pwViewAd) {}
 
             @Override
-            public void onViewAdClicked(@NonNull PWViewAd pwViewAd) {
-
-            }
+            public void onViewAdClicked(@NonNull PWViewAd pwViewAd) {}
 
             @Override
-            public void onViewAdClosed(@NonNull PWViewAd pwViewAd) {
-
-            }
+            public void onViewAdClosed(@NonNull PWViewAd pwViewAd) {}
 
             @Override
-            public void onViewAdOpened(@NonNull PWViewAd pwViewAd) {
-
-            }
+            public void onViewAdOpened(@NonNull PWViewAd pwViewAd) {}
 
             @Override
             public void onViewAdLoaded(@NonNull PWViewAd ad) {
-                statusTextView.setText(getString(R.string.banner_ad_loaded, adUnitName));
                 addBannerToParent();
+                banner.setVisibility(View.VISIBLE);
+                statusTextView.setText(getString(R.string.banner_ad_loaded, adUnitName));
             }
 
             @Override
             public void onViewAdFailedToLoad(@NonNull PWViewAd ad) {
+                if (banner != null) {
+                    banner.setVisibility(View.GONE);
+                }
                 statusTextView.setText(getString(R.string.banner_ad_load_failed, adUnitName));
             }
         };
 
         banner = new PWBannerView(this, adUnitName, listener);
 
-//        PWLoadParams params = new PWLoadParams()
-//                .withTargeting(new HashMap<>() {{
-//                            put("age", "18-35");
-//                            put("page", "travel");
-//                        }});
-//        banner.load(params);
+        banner.setVisibility(View.GONE);
 
         banner.load();
 

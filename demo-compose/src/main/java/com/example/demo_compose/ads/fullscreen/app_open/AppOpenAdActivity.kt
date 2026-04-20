@@ -86,7 +86,7 @@ fun AppOpenAdScreen(adUnitName: String?, statusText: String, onNavigateUp: () ->
             TopAppBar(
                 title = { Text(text = adUnitName ?: "App Open Ad") },
                 navigationIcon = {
-                    IconButton(onClick = { onNavigateUp }) {
+                    IconButton(onClick = onNavigateUp) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back Button"

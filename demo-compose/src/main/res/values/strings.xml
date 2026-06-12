@@ -17,12 +17,6 @@
 <string name="rewarded_ad_earned">🎉 The reward is earned.\n Type: %1$s \n Amount: %2$d</string>
 <string name="rewarded_ad_show_failed">❌ Failed to show the rewarded \"%1$s\".</string>
 <string name="rewarded_ad_loading">⏳ The rewarded \"%1$s\" is loading.</string>
-<string name="rewarded_interstitial_ad_loaded">✅ The rewarded interstitial \"%1$s\" is loaded.</string>
-<string name="rewarded_interstitial_ad_load_failed">❌ Failed to load the rewarded interstitial \"%1$s\".</string>
-<string name="rewarded_interstitial_ad_shown">👍 The rewarded interstitial \"%1$s\" was successfully shown.</string>
-<string name="rewarded_interstitial_ad_rewarded">🎉 The reward is earned.\n Type: %1$s \n Amount: %2$d</string>
-<string name="rewarded_interstitial_ad_show_failed">❌ Failed to show the rewarded interstitial \"%1$s\".</string>
-<string name="rewarded_interstitial_ad_loading">⏳ The rewarded interstitial \"%1$s\" is loading.</string>
 <string name="banner_ad_loaded">✅ The banner \"%1$s\" is loaded.</string>
 <string name="banner_ad_load_failed">❌ Failed to load the banner \"%1$s\".</string>
 <string name="banner_ad_loading">⏳ The banner \"%1$s\" is loading.</string>

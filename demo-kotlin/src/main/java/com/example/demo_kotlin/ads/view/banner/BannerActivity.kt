@@ -12,6 +12,7 @@ import com.example.demo_kotlin.R
 import com.intergi.playwiresdk.ads.view.PWViewAd
 import com.intergi.playwiresdk.ads.view.banner.PWBannerView
 import com.example.demo_kotlin.misc.Constant
+import com.intergi.playwiresdk.ads.PWAdError
 
 class BannerActivity : AppCompatActivity() {
     // The ad unit name, e.g. 'banner-320x50', 'interstitial-home', 'rewarded-coins', etc.
@@ -60,7 +61,7 @@ class BannerActivity : AppCompatActivity() {
                 statusTextView.text = getString(R.string.banner_ad_loaded, adUnitName)
             }
 
-            override fun onViewAdFailedToLoad(ad: PWViewAd) {
+            override fun onViewAdFailedToLoad(ad: PWViewAd, error: PWAdError) {
                 banner.visibility = View.GONE
                 statusTextView.text = getString(R.string.banner_ad_load_failed, adUnitName)
             }

@@ -15,8 +15,8 @@ import com.example.demo_kotlin.ads.view.banner.BannerActivity
 import com.example.demo_kotlin.ads.view.nativead.NativeAdActivity
 import com.example.demo_kotlin.misc.Constant
 import com.intergi.playwiresdk.PWAdMode
-import com.intergi.playwiresdk.PWNotifier
 import com.intergi.playwiresdk.PlaywireSDK
+import com.intergi.playwiresdk.logger.LogLevel
 
 class AdTypesActivity: AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -29,8 +29,8 @@ class AdTypesActivity: AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        // Start `PWNotifier` to log SDK events to console.
-        PWNotifier.startConsoleLogger()
+        // log SDK events to console.
+        PlaywireSDK.setLogLevel(LogLevel.INFO)
         // Set to `true` to test your implementation with GAM test ads on real devices.
         PlaywireSDK.test = false
 

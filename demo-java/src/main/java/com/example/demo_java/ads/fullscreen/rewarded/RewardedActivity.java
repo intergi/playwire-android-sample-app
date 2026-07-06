@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.demo_java.R;
 import com.example.demo_java.ads.fullscreen.FullScreenAdActivity;
+import com.intergi.playwiresdk.ads.PWAdError;
 import com.intergi.playwiresdk.ads.fullscreen.PWFullScreenAd;
 import com.intergi.playwiresdk.ads.fullscreen.rewarded.PWRewarded;
 
@@ -35,7 +36,7 @@ public class RewardedActivity extends FullScreenAdActivity {
             }
 
             @Override
-            public void onFullScreenAdFailedToLoad(@NonNull PWFullScreenAd pwFullScreenAd) {
+            public void onFullScreenAdFailedToLoad(@NonNull PWFullScreenAd pwFullScreenAd, @NonNull PWAdError error) {
                 statusTextView.setText(getString(R.string.rewarded_ad_load_failed, adUnitName));
             }
 
@@ -45,7 +46,7 @@ public class RewardedActivity extends FullScreenAdActivity {
             }
 
             @Override
-            public void onFullScreenAdFailedToShowFullScreenContent(@NonNull PWFullScreenAd pwFullScreenAd) {
+            public void onFullScreenAdFailedToShowFullScreenContent(@NonNull PWFullScreenAd pwFullScreenAd, @NonNull PWAdError error) {
                 statusTextView.setText(getString(R.string.rewarded_ad_show_failed, adUnitName));
             }
         };

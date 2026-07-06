@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.demo_java.R;
 import com.example.demo_java.misc.Constant;
+import com.intergi.playwiresdk.ads.PWAdError;
 import com.intergi.playwiresdk.ads.view.PWViewAd;
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeView;
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContentView;
@@ -77,7 +78,7 @@ public class NativeAdActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onViewAdFailedToLoad(@NonNull PWViewAd ad) {
+            public void onViewAdFailedToLoad(@NonNull PWViewAd ad, @NonNull PWAdError error) {
                 if (nativeAd != null) {
                     nativeAd.setVisibility(View.GONE);
                 }

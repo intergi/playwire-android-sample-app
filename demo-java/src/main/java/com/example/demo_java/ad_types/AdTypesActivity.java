@@ -20,11 +20,10 @@ import com.example.demo_java.ads.view.nativead.NativeAdActivity;
 import com.example.demo_java.misc.Constant;
 import com.intergi.playwiresdk.PWAdMode;
 import com.intergi.playwiresdk.PWConfig;
-import com.intergi.playwiresdk.PWNotifier;
 import com.intergi.playwiresdk.PlaywireSDK;
+import com.intergi.playwiresdk.logger.LogLevel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +37,7 @@ public class AdTypesActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        PWNotifier.INSTANCE.startConsoleLogger();
+        PlaywireSDK.INSTANCE.setLogLevel(LogLevel.INFO);
         PlaywireSDK.INSTANCE.setTest(false);
 
         PlaywireSDK.INSTANCE.start("1024407", "703", this, (success, error) -> {
@@ -60,8 +59,8 @@ public class AdTypesActivity extends AppCompatActivity {
         PWConfig config = PlaywireSDK.INSTANCE.getConfig();
 
         List<Pair<PWAdMode, String>> adUnits;
-        if (config != null && config.getAdUnits() != null) {
-            adUnits = Arrays.stream(config.getAdUnits())
+        if (config != null) {
+            adUnits = config.getAdUnits().stream()
                     .map(adUnit -> new Pair<>(adUnit.getMode(), adUnit.getName()))
                     .collect(Collectors.toList());
         } else {

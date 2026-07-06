@@ -23,6 +23,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.demo_compose.R
 import com.example.demo_compose.misc.Constant
 import com.example.demo_compose.ui.theme.PlaywireAppTheme
+import com.intergi.playwiresdk.ads.PWAdError
 import com.intergi.playwiresdk.ads.view.PWViewAd
 import com.intergi.playwiresdk.ads.view.banner.PWBannerView
 
@@ -60,7 +61,7 @@ class BannerActivity : ComponentActivity() {
                 isAdLoaded.value = true
             }
 
-            override fun onViewAdFailedToLoad(ad: PWViewAd) {
+            override fun onViewAdFailedToLoad(ad: PWViewAd, error: PWAdError) {
                 banner?.visibility = View.GONE
                 statusText.value = getString(R.string.banner_ad_load_failed, adUnitName)
                 isAdLoaded.value = false

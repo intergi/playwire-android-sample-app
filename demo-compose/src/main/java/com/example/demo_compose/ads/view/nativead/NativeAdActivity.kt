@@ -38,6 +38,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.demo_compose.R
 import com.example.demo_compose.misc.Constant
 import com.example.demo_compose.ui.theme.PlaywireAppTheme
+import com.intergi.playwiresdk.ads.PWAdError
 import com.intergi.playwiresdk.ads.view.PWViewAd
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeView
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContent
@@ -91,7 +92,7 @@ class NativeAdActivity : ComponentActivity() {
                 nativeAdHost.requestLayout()
             }
 
-            override fun onViewAdFailedToLoad(ad: PWViewAd) {
+            override fun onViewAdFailedToLoad(ad: PWViewAd, error: PWAdError) {
                 statusText = getString(R.string.native_ad_load_failed, adUnitName)
                 nativeAdView?.visibility = View.GONE
                 nativeAdHost.visibility = View.GONE

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import com.example.demo_compose.R
 import com.example.demo_compose.misc.Constant
 import com.example.demo_compose.ui.theme.PlaywireAppTheme
+import com.intergi.playwiresdk.ads.PWAdError
 import com.intergi.playwiresdk.ads.fullscreen.PWFullScreenAd
 import com.intergi.playwiresdk.ads.fullscreen.appopen.PWAppOpenAd
 
@@ -50,7 +51,7 @@ class AppOpenAdActivity : ComponentActivity() {
                 showAd()
             }
 
-            override fun onFullScreenAdFailedToLoad(ad: PWFullScreenAd) {
+            override fun onFullScreenAdFailedToLoad(ad: PWFullScreenAd, error: PWAdError) {
                 statusText.value = getString(R.string.app_open_ad_load_failed, adUnitName)
             }
 
@@ -58,7 +59,7 @@ class AppOpenAdActivity : ComponentActivity() {
                 statusText.value = getString(R.string.app_open_ad_shown, adUnitName)
             }
 
-            override fun onFullScreenAdFailedToShowFullScreenContent(ad: PWFullScreenAd) {
+            override fun onFullScreenAdFailedToShowFullScreenContent(ad: PWFullScreenAd, error: PWAdError) {
                 statusText.value = getString(R.string.app_open_ad_show_failed, adUnitName)
             }
         }

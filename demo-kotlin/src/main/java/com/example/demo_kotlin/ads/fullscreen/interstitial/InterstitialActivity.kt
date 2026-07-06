@@ -2,6 +2,7 @@ package com.example.demo_kotlin.ads.fullscreen.interstitial
 
 import com.example.demo_kotlin.R
 import com.example.demo_kotlin.ads.fullscreen.FullScreenAdActivity
+import com.intergi.playwiresdk.ads.PWAdError
 import com.intergi.playwiresdk.ads.fullscreen.PWFullScreenAd
 import com.intergi.playwiresdk.ads.fullscreen.interstitial.PWInterstitial
 
@@ -16,7 +17,7 @@ class InterstitialActivity : FullScreenAdActivity() {
                 showAd()
             }
 
-            override fun onFullScreenAdFailedToLoad(ad: PWFullScreenAd) {
+            override fun onFullScreenAdFailedToLoad(ad: PWFullScreenAd, error: PWAdError) {
                 statusTextView.text = getString(R.string.interstitial_ad_load_failed, adUnitName)
             }
 
@@ -24,7 +25,7 @@ class InterstitialActivity : FullScreenAdActivity() {
                 statusTextView.text = getString(R.string.interstitial_ad_shown, adUnitName)
             }
 
-            override fun onFullScreenAdFailedToShowFullScreenContent(ad: PWFullScreenAd) {
+            override fun onFullScreenAdFailedToShowFullScreenContent(ad: PWFullScreenAd, error: PWAdError) {
                 statusTextView.text = getString(R.string.interstitial_ad_show_failed, adUnitName)
             }
         }

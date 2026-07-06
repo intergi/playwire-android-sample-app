@@ -33,8 +33,8 @@ import com.example.demo_compose.ads.view.nativead.NativeAdActivity
 import com.example.demo_compose.misc.Constant
 import com.example.demo_compose.ui.theme.PlaywireAppTheme
 import com.intergi.playwiresdk.PWAdMode
-import com.intergi.playwiresdk.PWNotifier
 import com.intergi.playwiresdk.PlaywireSDK
+import com.intergi.playwiresdk.logger.LogLevel
 
 class AdTypesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +54,7 @@ fun AdTypesScreen(activity: Activity) {
     val adUnits = remember { mutableStateListOf<Pair<PWAdMode, String>>() }
 
     LaunchedEffect(Unit) {
-        PWNotifier.startConsoleLogger()
+        PlaywireSDK.setLogLevel(LogLevel.INFO)
         PlaywireSDK.test = false
 
         PlaywireSDK.start("1024407", "703", activity) { success, error ->

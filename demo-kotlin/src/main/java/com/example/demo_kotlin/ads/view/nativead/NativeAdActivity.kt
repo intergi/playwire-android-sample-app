@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.demo_kotlin.R
 import com.example.demo_kotlin.misc.Constant
+import com.intergi.playwiresdk.ads.PWAdError
 import com.intergi.playwiresdk.ads.view.PWViewAd
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeView
 import com.intergi.playwiresdk.ads.view.nativead.PWNativeViewContentView
@@ -62,7 +63,7 @@ class NativeAdActivity : AppCompatActivity() {
                 statusTextView.text = getString(R.string.native_ad_loaded, adUnitName)
             }
 
-            override fun onViewAdFailedToLoad(ad: PWViewAd) {
+            override fun onViewAdFailedToLoad(ad: PWViewAd, error: PWAdError) {
                 nativeAd.visibility = View.GONE
                 nativeAdContainer.visibility = View.GONE
                 statusTextView.text = getString(R.string.native_ad_load_failed, adUnitName)

@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.example.demo_java.R;
 import com.example.demo_java.misc.Constant;
+import com.intergi.playwiresdk.ads.PWAdError;
 import com.intergi.playwiresdk.ads.view.PWViewAd;
 import com.intergi.playwiresdk.ads.view.banner.PWBannerView;
 
@@ -86,7 +87,7 @@ public class BannerActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onViewAdFailedToLoad(@NonNull PWViewAd ad) {
+            public void onViewAdFailedToLoad(@NonNull PWViewAd ad, @NonNull PWAdError error) {
                 if (banner != null) {
                     banner.setVisibility(View.GONE);
                 }

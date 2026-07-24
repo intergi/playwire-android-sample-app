@@ -1,5 +1,6 @@
 package com.example.demo_kotlin.ad_types
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -14,11 +15,10 @@ import com.example.demo_kotlin.ads.fullscreen.rewarded.RewardedActivity
 import com.example.demo_kotlin.ads.view.banner.BannerActivity
 import com.example.demo_kotlin.ads.view.nativead.NativeAdActivity
 import com.example.demo_kotlin.misc.Constant
-import com.intergi.playwiresdk.PWAdMode
 import com.intergi.playwiresdk.PlaywireSDK
 import com.intergi.playwiresdk.logger.LogLevel
 
-class AdTypesActivity: AppCompatActivity() {
+class AdTypesActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdTypesAdapter
 
@@ -50,36 +50,32 @@ class AdTypesActivity: AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val adUnits = PlaywireSDK.getConfig()?.adUnits?.map {
-            Pair(it.mode, it.name)
-        } ?: emptyList()
-
         recyclerView = findViewById(R.id.ad_units_recycler_view)
 
-        adapter = AdTypesAdapter { selectedAd ->
-            val adUnitName = selectedAd.second
-            val adMode = selectedAd.first
-            showAdUnitActivity(adUnitName, adMode)
+        adapter = AdTypesAdapter { (adUnitName, activityClass) ->
+            val intent = Intent(this, activityClass)
+            intent.putExtra(Constant.adUnitNameKey, adUnitName)
+            startActivity(intent)
         }
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val adUnits: List<Pair<String, Class<out Activity>>> = listOf(
+            Pair("banner-320x50-gam", BannerActivity::class.java),
+            Pair("banner-320x50-max", BannerActivity::class.java),
+            Pair("banner-300x250-gam", BannerActivity::class.java),
+            Pair("banner-300x250-max", BannerActivity::class.java),
+            Pair("native-gam", NativeAdActivity::class.java),
+            Pair("native-max", NativeAdActivity::class.java),
+            Pair("app-open-gam", AppOpenAdActivity::class.java),
+            Pair("app-open-max", AppOpenAdActivity::class.java),
+            Pair("interstitial-gam", InterstitialActivity::class.java),
+            Pair("interstitial-max", InterstitialActivity::class.java),
+            Pair("rewarded-gam", RewardedActivity::class.java),
+            Pair("rewarded-video-max", RewardedActivity::class.java),
+            Pair("floating-banner", BannerActivity::class.java)
+        )
         adapter.submitList(adUnits)
-    }
-
-    private fun showAdUnitActivity(adUnitName: String, mode: PWAdMode) {
-        val activityClass = when (mode) {
-            PWAdMode.Banner -> BannerActivity::class.java
-            PWAdMode.Interstitial -> InterstitialActivity::class.java
-            PWAdMode.Rewarded -> RewardedActivity::class.java
-            PWAdMode.AppOpenAd -> AppOpenAdActivity::class.java
-            PWAdMode.Native -> NativeAdActivity::class.java
-            else -> { throw IllegalArgumentException("Invalid ad mode: $mode") }
-        }
-
-        val intent = Intent(this, activityClass)
-        intent.putExtra(Constant.adUnitNameKey, adUnitName)
-        startActivity(intent)
     }
 }

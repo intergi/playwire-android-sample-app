@@ -1,23 +1,25 @@
 package com.example.demo_java.ad_types;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.demo_java.R;
-import com.intergi.playwiresdk.PWAdMode;
 
-public class AdTypesAdapter extends ListAdapter<Pair<PWAdMode, String>, AdTypesAdapter.ViewHolder> {
+import com.example.demo_java.R;
+
+public class AdTypesAdapter extends ListAdapter<Pair<String, Class<? extends Activity>>, AdTypesAdapter.ViewHolder> {
 
     private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(Pair<PWAdMode, String> adUnit);
+        void onItemClick(Pair<String, Class<? extends Activity>> adUnit);
     }
 
     public AdTypesAdapter(OnItemClickListener onItemClickListener) {
@@ -35,36 +37,33 @@ public class AdTypesAdapter extends ListAdapter<Pair<PWAdMode, String>, AdTypesA
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Pair<PWAdMode, String> adUnit = getItem(position);
+        Pair<String, Class<? extends Activity>> adUnit = getItem(position);
         holder.bind(adUnit);
         holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(adUnit));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView adUnitAliasTextView;
-        private final TextView adUnitModeTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             adUnitAliasTextView = itemView.findViewById(R.id.ad_unit_name);
-            adUnitModeTextView = itemView.findViewById(R.id.ad_unit_mode);
         }
 
-        public void bind(Pair<PWAdMode, String> adUnit) {
-            adUnitAliasTextView.setText(adUnit.second);
-            adUnitModeTextView.setText(adUnit.first.name());
+        public void bind(Pair<String, Class<? extends Activity>> adUnit) {
+            adUnitAliasTextView.setText(adUnit.first);
         }
     }
 
-    private static final DiffUtil.ItemCallback<Pair<PWAdMode, String>> DIFF_CALLBACK =
+    private static final DiffUtil.ItemCallback<Pair<String, Class<? extends Activity>>> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull Pair<PWAdMode, String> oldItem, @NonNull Pair<PWAdMode, String> newItem) {
+                public boolean areItemsTheSame(@NonNull Pair<String, Class<? extends Activity>> oldItem, @NonNull Pair<String, Class<? extends Activity>> newItem) {
                     return oldItem.second.equals(newItem.second);
                 }
 
                 @Override
-                public boolean areContentsTheSame(@NonNull Pair<PWAdMode, String> oldItem, @NonNull Pair<PWAdMode, String> newItem) {
+                public boolean areContentsTheSame(@NonNull Pair<String, Class<? extends Activity>> oldItem, @NonNull Pair<String, Class<? extends Activity>> newItem) {
                     return oldItem.equals(newItem);
                 }
             };

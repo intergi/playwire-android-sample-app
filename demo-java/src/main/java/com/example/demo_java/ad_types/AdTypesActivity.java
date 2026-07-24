@@ -1,5 +1,6 @@
 package com.example.demo_java.ad_types;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -18,14 +19,10 @@ import com.example.demo_java.ads.fullscreen.rewarded.RewardedActivity;
 import com.example.demo_java.ads.view.banner.BannerActivity;
 import com.example.demo_java.ads.view.nativead.NativeAdActivity;
 import com.example.demo_java.misc.Constant;
-import com.intergi.playwiresdk.PWAdMode;
-import com.intergi.playwiresdk.PWConfig;
 import com.intergi.playwiresdk.PlaywireSDK;
 import com.intergi.playwiresdk.logger.LogLevel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AdTypesActivity extends AppCompatActivity {
 
@@ -56,53 +53,34 @@ public class AdTypesActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        PWConfig config = PlaywireSDK.INSTANCE.getConfig();
-
-        List<Pair<PWAdMode, String>> adUnits;
-        if (config != null) {
-            adUnits = config.getAdUnits().stream()
-                    .map(adUnit -> new Pair<>(adUnit.getMode(), adUnit.getName()))
-                    .collect(Collectors.toList());
-        } else {
-            adUnits = new ArrayList<>();
-        }
-
         RecyclerView recyclerView = findViewById(R.id.ad_units_recycler_view);
-        AdTypesAdapter adapter = new AdTypesAdapter(adUnit -> {
-            String adUnitName = adUnit.second;
-            PWAdMode adMode = adUnit.first;
-            showAdUnitActivity(adUnitName, adMode);
+
+        AdTypesAdapter adapter = new AdTypesAdapter(item -> {
+            String adUnitName = item.first;
+            Class<? extends Activity> activityClass = item.second;
+            Intent intent = new Intent(this, item.second);
+            intent.putExtra(Constant.adUnitNameKey, adUnitName);
+            startActivity(intent);
         });
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<Pair<String, Class<? extends Activity>>> adUnits = List.of(
+                new Pair("banner-320x50-gam", BannerActivity.class),
+                new Pair("banner-320x50-max", BannerActivity.class),
+                new Pair("banner-300x250-gam", BannerActivity.class),
+                new Pair("banner-300x250-max", BannerActivity.class),
+                new Pair("native-gam", NativeAdActivity.class),
+                new Pair("native-max", NativeAdActivity.class),
+                new Pair("app-open-gam", AppOpenAdActivity.class),
+                new Pair("app-open-max", AppOpenAdActivity.class),
+                new Pair("interstitial-gam", InterstitialActivity.class),
+                new Pair("interstitial-max", InterstitialActivity.class),
+                new Pair("rewarded-gam", RewardedActivity.class),
+                new Pair("rewarded-video-max", RewardedActivity.class),
+                new Pair("floating-banner", BannerActivity.class)
+        );
         adapter.submitList(adUnits);
-    }
-
-    private void showAdUnitActivity(String adUnitName, PWAdMode mode) {
-        Class<?> activityClass;
-        switch (mode) {
-            case Banner:
-                activityClass = BannerActivity.class;
-                break;
-            case Interstitial:
-                activityClass = InterstitialActivity.class;
-                break;
-            case Rewarded:
-                activityClass = RewardedActivity.class;
-                break;
-            case AppOpenAd:
-                activityClass = AppOpenAdActivity.class;
-                break;
-            case Native:
-                activityClass = NativeAdActivity.class;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid ad mode: " + mode);
-        }
-
-        Intent intent = new Intent(this, activityClass);
-        intent.putExtra(Constant.adUnitNameKey, adUnitName);
-        startActivity(intent);
     }
 }

@@ -19,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,7 +32,6 @@ import com.example.demo_compose.ads.view.banner.BannerActivity
 import com.example.demo_compose.ads.view.nativead.NativeAdActivity
 import com.example.demo_compose.misc.Constant
 import com.example.demo_compose.ui.theme.PlaywireAppTheme
-import com.intergi.playwiresdk.PWAdMode
 import com.intergi.playwiresdk.PlaywireSDK
 import com.intergi.playwiresdk.logger.LogLevel
 
@@ -51,7 +50,23 @@ class AdTypesActivity : ComponentActivity() {
 @Composable
 fun AdTypesScreen(activity: Activity) {
     val context = LocalContext.current
-    val adUnits = remember { mutableStateListOf<Pair<PWAdMode, String>>() }
+    val isInitialized = remember { mutableStateOf(false) }
+
+    val adUnits: List<Pair<String, Class<out Activity>>> = listOf(
+        Pair("banner-320x50-gam", BannerActivity::class.java),
+        Pair("banner-320x50-max", BannerActivity::class.java),
+        Pair("banner-300x250-gam", BannerActivity::class.java),
+        Pair("banner-300x250-max", BannerActivity::class.java),
+        Pair("native-gam", NativeAdActivity::class.java),
+        Pair("native-max", NativeAdActivity::class.java),
+        Pair("app-open-gam", AppOpenAdActivity::class.java),
+        Pair("app-open-max", AppOpenAdActivity::class.java),
+        Pair("interstitial-gam", InterstitialActivity::class.java),
+        Pair("interstitial-max", InterstitialActivity::class.java),
+        Pair("rewarded-gam", RewardedActivity::class.java),
+        Pair("rewarded-video-max", RewardedActivity::class.java),
+        Pair("floating-banner", BannerActivity::class.java)
+    )
 
     LaunchedEffect(Unit) {
         PlaywireSDK.setLogLevel(LogLevel.INFO)
@@ -59,11 +74,7 @@ fun AdTypesScreen(activity: Activity) {
 
         PlaywireSDK.start("1024407", "703", activity) { success, error ->
             if (success) {
-                adUnits.addAll(
-                    PlaywireSDK.getConfig()?.adUnits?.map {
-                        Pair(it.mode, it.name)
-                    } ?: emptyList()
-                )
+                isInitialized.value = true
             } else {
                 Toast.makeText(
                     context,
@@ -76,20 +87,12 @@ fun AdTypesScreen(activity: Activity) {
 
     Surface(color = MaterialTheme.colorScheme.background) {
         Column {
-            TopAppBar(title = { Text("Ad Types") })
+            TopAppBar(title = { Text("demo-compose") })
             LazyColumn {
-                items(adUnits) { adUnit ->
-                    AdUnitRow(adUnit = adUnit) {
-                        val activityClass = when (adUnit.first) {
-                            PWAdMode.Banner -> BannerActivity::class.java
-                            PWAdMode.Interstitial -> InterstitialActivity::class.java
-                            PWAdMode.Rewarded -> RewardedActivity::class.java
-                            PWAdMode.AppOpenAd -> AppOpenAdActivity::class.java
-                            PWAdMode.Native -> NativeAdActivity::class.java
-                            else -> throw IllegalArgumentException("Invalid ad mode: ${adUnit.first}")
-                        }
+                items(adUnits) { (adUnitName, activityClass) ->
+                    AdUnitRow(adUnitName = adUnitName) {
                         val intent = Intent(context, activityClass)
-                        intent.putExtra(Constant.adUnitNameKey, adUnit.second)
+                        intent.putExtra(Constant.adUnitNameKey, adUnitName)
                         context.startActivity(intent)
                     }
                 }
@@ -99,9 +102,9 @@ fun AdTypesScreen(activity: Activity) {
 }
 
 @Composable
-fun AdUnitRow(adUnit: Pair<PWAdMode, String>, onAdUnitClick: () -> Unit) {
+fun AdUnitRow(adUnitName: String, onAdUnitClick: () -> Unit) {
     Text(
-        text = adUnit.second,
+        text = adUnitName,
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onAdUnitClick() }

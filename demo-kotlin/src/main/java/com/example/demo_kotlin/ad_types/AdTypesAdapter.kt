@@ -1,5 +1,6 @@
 package com.example.demo_kotlin.ad_types
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo_kotlin.R
-import com.intergi.playwiresdk.PWAdMode
 
 class AdTypesAdapter(
-    private val onItemClicked: (Pair<PWAdMode, String>) -> Unit
-) : ListAdapter<Pair<PWAdMode, String>, AdTypesAdapter.ViewHolder>(DiffCallback) {
+    private val onItemClicked: (Pair<String, Class<out Activity>>) -> Unit
+) : ListAdapter<Pair<String, Class<out Activity>>, AdTypesAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -30,23 +30,21 @@ class AdTypesAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val adUnitAliasTextView: TextView = itemView.findViewById(R.id.ad_unit_name)
-        private val adUnitModeTextView: TextView = itemView.findViewById(R.id.ad_unit_mode)
 
-        fun bind(adUnit: Pair<PWAdMode, String>) {
-            adUnitAliasTextView.text = adUnit.second
-            adUnitModeTextView.text = adUnit.first.name
+        fun bind(adUnit: Pair<String, Class<out Activity>>) {
+            adUnitAliasTextView.text = adUnit.first
         }
     }
 
-    object DiffCallback : DiffUtil.ItemCallback<Pair<PWAdMode, String>>() {
+    object DiffCallback : DiffUtil.ItemCallback<Pair<String, Class<out Activity>>>() {
         override fun areItemsTheSame(
-            oldItem: Pair<PWAdMode, String>,
-            newItem: Pair<PWAdMode, String>
+            oldItem: Pair<String, Class<out Activity>>,
+            newItem: Pair<String, Class<out Activity>>
         ): Boolean = oldItem.second == newItem.second
 
         override fun areContentsTheSame(
-            oldItem: Pair<PWAdMode, String>,
-            newItem: Pair<PWAdMode, String>
+            oldItem: Pair<String, Class<out Activity>>,
+            newItem: Pair<String, Class<out Activity>>
         ): Boolean = oldItem == newItem
     }
 }

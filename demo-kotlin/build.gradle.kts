@@ -61,7 +61,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.intergi.playwire:playwiresdk_total:13.1.0")
+    implementation("com.intergi.playwire:playwiresdk_total:13.2.0-alpha.2")
 
     implementation("com.google.android.material:material:1.13.0")
 
